@@ -1,0 +1,17 @@
+.header {
+    width: 80%;
+    height: 10vh;
+    display: flex;
+    border-bottom: 1px solid #545454;
+    margin-top: 20px;
+}
+
+.header__logo {
+    align-self: flex-start;
+    width: 173px;
+    height: 33px;
+}
+
+/* TODO
+ADD MEDIA QUERIES
+*/
