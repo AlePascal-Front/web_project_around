@@ -1,0 +1,77 @@
+.profile {
+    display: flex;
+    width: 92%;
+    flex-direction: row;
+    height: 20%;
+    justify-content: flex-start;
+    margin: 0 auto;
+    margin-top: 25px;
+}
+
+.profile__photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+}
+
+.profile__content {
+    display: grid;
+    grid-template-rows: auto 50%;
+
+    /* let it be of the content's size */
+    grid-template-columns: auto auto auto;
+
+    margin: auto 0 auto 30px;
+}
+
+.profile__name {
+    font-size: 2.625rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.profile__description {
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin: 0;
+    grid-row-start: 2;
+    grid-column-start: 1;
+}
+
+.profile__edit-button {
+    width: auto;
+    height: fit-content;
+    padding: 2px;
+
+    /* allocate next to profile name */
+    margin: auto 0 auto 15px;
+
+    background-color: transparent;
+    border: 2px solid #fff;
+}
+
+.profile__edit-button-svg {
+    width: 15px;
+    height: 15px;
+    color: #fff;
+}
+
+.profile__add-button {
+    /* align-self: flex-end; */
+    width: 15%;
+    height: 50px;
+    border: 2px solid #fff;
+    background-color: transparent;
+    color: #fff;
+    font-weight: 900;
+    font-size: 2.5rem;
+
+    /* allocate it into the last corner of the flexbox */
+    margin: auto 0 auto auto;
+}
+
+/* TODO
+ADD MEDIA QUERIES
+*/
+
