@@ -8,11 +8,12 @@
     <meta name="keywords" content="Travel, Around, Trip" />
     <meta name="description" content="Around the world website" />
     <meta name="author" content="Tobi" />
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="pages/index.css" />
     <title>Around the world</title>
   </head>
   <body>
-    <div class="page"> <!-- class for general styling -->
+    <div class="page">
+      <!-- class for general styling -->
       <header class="header">
         <img
           class="header__logo"
@@ -20,29 +21,38 @@
           alt="Around the world"
         />
       </header>
-      <main class="content"> <!-- class for general styling -->
+      <main class="content">
+        <!-- class for general styling -->
         <div class="profile">
-          <img src="images/person-photo.jpeg" alt="A photo of a person" class="profile__photo" />
-          <h1 class="profile__name">Jacques Cousteau</h1>
-          <p class="profile__description">Explorador</p>
-          <button class="profile__edit-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="profile__edit-button-svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-              />
-            </svg>
-          </button>
+          <img
+            src="images/person-photo.jpeg"
+            alt="A photo of a person"
+            class="profile__photo"
+          />
+          <div class="profile__content">
+            <h1 class="profile__name">Jacques Cousteau</h1>
+            <p class="profile__description">Explorateur</p>
+            <button class="profile__edit-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="profile__edit-button-svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                />
+              </svg>
+            </button>
+          </div>
           <button class="profile__add-button">+</button>
-          <section class="cards">
+        </div>
+        <section class="cards">
+          <div class="cards__grid">
             <div class="card">
               <img
                 src="images/acapulco.jpg"
@@ -90,7 +100,7 @@
               <p class="card__like-button-count"></p>
             </div>
             <div class="card">
-                <img
+              <img
                 src="images/edimburgo.jpg"
                 alt="english city called Edinburgh"
                 class="card__image"
@@ -113,7 +123,7 @@
               <p class="card__like-button-count"></p>
             </div>
             <div class="card">
-                <img
+              <img
                 src="images/louvre-museum.jpg"
                 alt="french museum called Louvre"
                 class="card__image"
@@ -136,7 +146,7 @@
               <p class="card__like-button-count"></p>
             </div>
             <div class="card">
-                <img
+              <img
                 src="images/shangaijpg.jpg"
                 alt="chinese city called Shanghai"
                 class="card__image"
@@ -159,7 +169,7 @@
               <p class="card__like-button-count"></p>
             </div>
             <div class="card">
-                <img
+              <img
                 src="images/shibuya-crossing.jpg"
                 alt="japanese city called Tokyo"
                 class="card__image"
@@ -181,8 +191,8 @@
               </svg>
               <p class="card__like-button-count"></p>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </main>
     </div>
   </body>
