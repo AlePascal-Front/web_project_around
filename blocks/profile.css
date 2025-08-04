@@ -71,6 +71,14 @@
     margin: auto 0 auto auto;
 }
 
+.profile__add-button:hover,
+.profile__edit-button:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+
+
 /* TODO
 ADD MEDIA QUERIES
 */
