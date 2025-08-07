@@ -45,7 +45,7 @@
   font-size: 1.5rem;
   color: #000;
   margin-left: 20px;
-  
+
   /* case when the user inputs
   a text that overflows its parent container*/
   text-overflow: ellipsis;
@@ -63,6 +63,10 @@
 
 .card__like-button-svg:hover {
   opacity: 0.5;
+}
+
+.card__like-button-svg:active {
+  fill: #000;
 }
 
 /* TODO
