@@ -22,7 +22,37 @@
         />
       </header>
       <main class="content">
-        <!-- class for general styling -->
+        <div class="popup">
+          <form action="#" class="popup__container">
+            <button class="popup__close-button">
+              <img src="images/Close Icon.png" />
+            </button>
+            <h2 class="popup__title">Editar perfil</h2>
+            <input
+              type="text"
+              name="userName"
+              id="userName"
+              placeholder="Nombre"
+              class="popup__input"
+              required
+            />
+            <input
+              type="text"
+              name="userTitle"
+              id="userTitle"
+              placeholder="Acerca de mí"
+              class="popup__input"
+              required
+            />
+            <input
+              type="submit"
+              name="submit"
+              id="submit"
+              class="popup__button"
+              value="Guardar"
+            />
+          </form>
+        </div>
         <div class="profile">
           <img
             src="images/person-photo.jpeg"
@@ -206,6 +236,10 @@
           </div>
         </section>
       </main>
+      <footer class="footer">
+        <p class="footer__copyright">&copy; 2024 Around The World</p>
+      </footer>
     </div>
+    <script src="main.js" defer></script>
   </body>
 </html>
