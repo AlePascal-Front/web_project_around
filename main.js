@@ -27,6 +27,7 @@ function getEmptyFields() {
 
 function showWarning(emptyF) {
   for (const key in emptyF) {
+    // conditional that prevents creating multiple instances of the same warning msg
     if (emptyF[key].nextSibling.tagName === "P") {
       continue;
     }
@@ -51,7 +52,6 @@ function getUserInput(e) {
   // prevents page reload
   e.preventDefault();
 
-  let inputFields = popup.querySelectorAll(".popup__input");
   let userName = inputFields[0].value;
   let userAbout = inputFields[1].value;
 
@@ -84,7 +84,7 @@ let emptyFields;
 function handleSubmit(e) {
   e.preventDefault();
   userInfo = getUserInput(e);
-  emptyFields = getEmptyFields(userInfo);
+  emptyFields = getEmptyFields();
 
   if (emptyFields !== undefined) {
     showWarning(emptyFields);
