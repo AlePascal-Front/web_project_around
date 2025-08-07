@@ -13,7 +13,6 @@ const popupCloseBttn = popup.querySelector(".popup__close-button");
 const popupSaveBttn = popup.querySelector(".popup__button");
 
 let inputFields = Array.from(popup.querySelectorAll(".popup__input"));
-let isPopupOpen = false;
 
 function getEmptyFields() {
   let empty = {};
@@ -65,7 +64,6 @@ function hidePopUp(e) {
 
   // prevents scroll to top of the page when clicking close button
   e.preventDefault();
-  isPopupOpen = false;
 }
 
 function showPopUp() {
@@ -77,8 +75,6 @@ function showPopUp() {
     opaqueDiv.classList.add("page__opaque-layout");
     page.insertAdjacentElement("afterbegin", opaqueDiv);
   }
-
-  isPopupOpen = true;
 }
 
 let warningMsg;
