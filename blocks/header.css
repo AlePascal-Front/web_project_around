@@ -12,6 +12,15 @@
     height: 33px;
 }
 
-/* TODO
-ADD MEDIA QUERIES
-*/
+@media screen and (max-width: 320px) {
+  .header {
+    padding: 0;
+    width: 100vw;
+  }
+
+  .header__logo {
+    width: 126px;
+    height: 24px;
+    margin-left: 20px;
+  }
+}

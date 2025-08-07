@@ -36,4 +36,10 @@
   opacity: 0.5;
 }
 
-
+@media screen and (max-width: 320px) {
+  .page {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+  }
+}

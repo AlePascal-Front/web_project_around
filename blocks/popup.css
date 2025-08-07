@@ -65,3 +65,30 @@
   cursor: pointer;
   opacity: 0.6;
 }
+
+@media screen and (max-width: 320px) {
+  .popup_opened, .popup__container {
+    width: 282px;
+
+    /* allocate to center of page */
+    left: calc(50% - 44%);
+  }
+
+  .popup__close-button {
+    right: -35px;
+    top: 70px;
+  }
+
+  .popup__close-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .popup__input {
+    width: 100%;
+  }
+
+  .popup__button {
+    width: 100%;
+  }
+}
