@@ -69,6 +69,8 @@ function hidePopUp(e) {
 function showPopUp() {
   // debugger;
   popup.classList.add("popup_opened");
+  inputFields[0].value = profile.querySelector(".profile__name").textContent;
+  inputFields[1].value = profile.querySelector(".profile__description").textContent;
 
   if (popup.classList.contains("popup_opened")) {
     let opaqueDiv = document.createElement("div");
