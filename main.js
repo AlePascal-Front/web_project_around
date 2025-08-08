@@ -33,10 +33,7 @@ function showWarning(emptyF) {
     }
     warningMsg = document.createElement("p");
     warningMsg.textContent = "* Por favor, llena todos los campos";
-    warningMsg.style.color = "red";
-    warningMsg.style.padding = "0";
-    warningMsg.style.margin = "0";
-    warningMsg.style.transform = "translateY(-16px)";
+    warningMsg.classList.add("popup__warning-msg");
     // warningMsg.style.position = "absolute";
 
     emptyF[key].insertAdjacentElement("afterend", warningMsg);
