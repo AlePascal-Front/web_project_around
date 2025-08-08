@@ -77,3 +77,11 @@
     -ms-flex-direction: column;
   }
 }
+
+@media screen and (min-width: 431px) and (max-width: 642px) {
+  .cards__grid {
+    width: 100%;
+    grid-template-rows: 1fr;
+    grid-template-columns: 30% 30%;
+  }
+}

@@ -43,3 +43,10 @@
     padding: 15px;
   }
 }
+
+@media screen and (min-width: 431px) and (max-width: 642px) {
+  .page {
+    width: 100vw;
+    height: 100%;
+  }
+}

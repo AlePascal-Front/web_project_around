@@ -117,10 +117,27 @@ ADD MEDIA QUERIES
     height: 10px;
     color: #fff;
   }
+}
+
+@media screen and (min-width: 431px) and (max-width: 642px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile__name {
+    text-align: center;
+  }
+
+  .profile__description {
+    text-align: center;
+    margin: 20px 0;
+  }
 
   .profile__add-button {
+    margin: 0;
+    margin-top: 20px;
     width: 100%;
-    margin: 20px 0;
-    font-weight: normal;
   }
 }
