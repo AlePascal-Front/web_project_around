@@ -109,7 +109,7 @@ for (let i = 0; i < inputFields.length; i++) {
   });
   // remove warning message once the user starts typing
   inputFields[i].addEventListener("input", () => {
-    if (inputFields[i].nextSibling.tagName === "P") {
+    if(inputFields[i].nextSibling.tagName === "P") {
       inputFields[i].nextSibling.remove();
     }
   });
