@@ -18,4 +18,4 @@ Web project from a coding bootcamp with focus on front-end skills build with mod
 
 # Link to Github Pages
 
-- 
+- Watch it working from here: https://alepascal-front.github.io/web_project_around/
