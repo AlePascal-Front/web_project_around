@@ -2,7 +2,7 @@
 
 Web project from a coding bootcamp with focus on front-end skills build with modern technologies such as HTML, CSS and JavaScript.
 
-# List of features
+# List of features :rocket:
 
 * Possibility to upgrade profile name.
 * Possibility to upgrade profile description.
@@ -10,7 +10,7 @@ Web project from a coding bootcamp with focus on front-end skills build with mod
 * View it from anywhere. Usage of media queries to obtain optimal viewport on mobile and desktop screens.
 * Modern UI thanks to the usage of modern markup languages and programming languages.
 
-# Technologies used
+# Technologies used :computer:
 
 * HTML.
 * CSS.
