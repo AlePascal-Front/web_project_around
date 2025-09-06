@@ -6,13 +6,14 @@ const footer = page.querySelector(".footer");
 
 const editBttn = content.querySelector(".profile__edit-button");
 const editSvg = content.querySelector(".profile__edit-button-svg");
+const addBttn = content.querySelector(".profile__add-button");
 
-const popup = content.querySelector(".popup");
-const popupContainer = popup.querySelector(".popup__container");
-const popupCloseBttn = popup.querySelector(".popup__close-button");
-const popupSaveBttn = popup.querySelector(".popup__button");
+// const popup = content.querySelector(".popup");
+// const popupContainer = popup.querySelector(".popup__container");
+// const popupCloseBttn = popup.querySelector(".popup__close-button");
+// const popupSaveBttn = popup.querySelector(".popup__button");
 
-let inputFields = Array.from(popup.querySelectorAll(".popup__input"));
+// let inputFields = Array.from(popup.querySelectorAll(".popup__input"));
 
 const initialCards = [
   {
@@ -39,13 +40,30 @@ const initialCards = [
     name: "Tokyo",
     link: "../images/tokyo.jpg"
   }
-]
+];
+
+const popupElements = {
+  "edit-profile": {
+    title: "Editar perfil",
+    placeholderOne: "Escribe tu nombre",
+    placeholderTwo: "Escribe tu descripción"
+  },
+  "add-card": {
+    title: "Añadir tarjeta",
+    placeholderOne: "Escribe tu título",
+    placeholderTwo: "Escribe tu enlace"
+  }
+}
 
 /**
  * @returns {DocumentFragment}
  */
 function getCardsTemplate() {
   return document.getElementById("card-template").content.cloneNode(true);
+}
+
+function getPopUpTemplate() {
+  return document.getElementById("popup-template").content.cloneNode(true);
 }
 
 function createCard(template, cardData) {
@@ -62,6 +80,10 @@ function renderInitialCards() {
   });
 }
 
+function renderPopUp() {
+
+}
+
 function getEmptyFields() {
   let empty = {};
   for (let i = 0; i < inputFields.length; i++) {
@@ -70,7 +92,7 @@ function getEmptyFields() {
     }
   }
 
-  return Object.keys(empty).length === 0 ? undefined : empty;
+  return Object.keys(empty).length === 0 ? null : empty;
 }
 
 function showWarning(emptyF) {
@@ -129,7 +151,7 @@ function handleSubmit(e) {
   userInfo = getUserInput(e);
   emptyFields = getEmptyFields();
 
-  if (emptyFields !== undefined) {
+  if (emptyFields !== null) {
     showWarning(emptyFields);
     return;
   }
@@ -145,6 +167,7 @@ let emptyFields;
 
 renderInitialCards();
 editBttn.addEventListener("click", showPopUp);
+addBttn.addEventListener("click",)
 popupCloseBttn.addEventListener("click", hidePopUp);
 popupSaveBttn.addEventListener("click", (e) => {
   handleSubmit(e);
