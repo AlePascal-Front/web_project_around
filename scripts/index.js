@@ -14,6 +14,54 @@ const popupSaveBttn = popup.querySelector(".popup__button");
 
 let inputFields = Array.from(popup.querySelectorAll(".popup__input"));
 
+const initialCards = [
+  {
+    name: "Acapulco",
+    link: "../images/acapulco.jpg"
+  },
+  {
+    name: "Chichen Itza",
+    link: "../images/chichen-itza.jpg"
+  },
+  {
+    name: "Edinburgh",
+    link: "../images/edimburgo.jpg"
+  },
+  {
+    name: "Louvre",
+    link: "../images/louvre-museum.jpg"
+  },
+  {
+    name: "Shanghai",
+    link: "../images/shangai.jpg"
+  },
+  {
+    name: "Tokyo",
+    link: "../images/tokyo.jpg"
+  }
+]
+
+/**
+ * @returns {DocumentFragment}
+ */
+function getCardsTemplate() {
+  return document.getElementById("card-template").content.cloneNode(true);
+}
+
+function createCard(template, cardData) {
+  template.querySelector(".card__title").textContent = cardData.name;
+  template.querySelector(".card__image").src = cardData.link;
+}
+
+function renderInitialCards() {
+  let cardContainer = document.querySelector(".cards");
+  initialCards.forEach((cardData) => {
+    let template = getCardsTemplate();
+    createCard(template, cardData);
+    cardContainer.append(template);
+  });
+}
+
 function getEmptyFields() {
   let empty = {};
   for (let i = 0; i < inputFields.length; i++) {
@@ -76,10 +124,6 @@ function showPopUp() {
   }
 }
 
-let warningMsg;
-let userInfo;
-let emptyFields;
-
 function handleSubmit(e) {
   e.preventDefault();
   userInfo = getUserInput(e);
@@ -94,6 +138,11 @@ function handleSubmit(e) {
   hidePopUp(e);
 }
 
+let warningMsg;
+let userInfo;
+let emptyFields;
+
+renderInitialCards();
 editBttn.addEventListener("click", showPopUp);
 popupCloseBttn.addEventListener("click", hidePopUp);
 popupSaveBttn.addEventListener("click", (e) => {
