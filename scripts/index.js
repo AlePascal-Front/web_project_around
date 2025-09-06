@@ -54,7 +54,7 @@ function createCard(template, cardData) {
 }
 
 function renderInitialCards() {
-  let cardContainer = document.querySelector(".cards");
+  let cardContainer = document.querySelector(".cards__grid");
   initialCards.forEach((cardData) => {
     let template = getCardsTemplate();
     createCard(template, cardData);
@@ -141,6 +141,7 @@ function handleSubmit(e) {
 let warningMsg;
 let userInfo;
 let emptyFields;
+
 
 renderInitialCards();
 editBttn.addEventListener("click", showPopUp);
