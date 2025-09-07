@@ -22,54 +22,7 @@
         />
       </header>
       <main class="content">
-        <div class="profile-popup">
-          <form action="#" class="popup-container">
-            <button class="popup__close-button">
-              <img src="images/Close Icon.png" class="popup__close-icon" />
-            </button>
-            <h2 class="popup__title">Editar perfil</h2>
-            <input
-              type="text"
-              name="user-name"
-              id="user-name"
-              placeholder="Nombre"
-              class="popup__input"
-              required
-            />
-            <input
-              type="text"
-              name="user-description"
-              id="user-description"
-              placeholder="Descripción"
-              class="popup__input"
-              required
-            />
-          </form>
-        </div>
-        <div class="card-popup">
-          <form action="#" class="popup-container">
-            <button class="popup__close-button">
-              <img src="images/Close Icon.png" class="popup__close-icon" />
-            </button>
-            <h2 class="popup__title">Agregar lugar</h2>
-            <input
-              type="text"
-              name="card-name"
-              id="card-name"
-              placeholder="Título"
-              class="popup__input"
-              required
-            />
-            <input
-              type="url"
-              name="card-link"
-              id="card-link"
-              placeholder="Link de la imagen"
-              class="popup__input"
-              required
-            />
-          </form>
-        </div>
+        <div class="popup"></div>
         <div class="profile">
           <img
             src="images/person-photo.jpeg"
@@ -79,7 +32,7 @@
           <div class="profile__content">
             <h1 class="profile__name">Jacques Cousteau</h1>
             <p class="profile__description">Explorateur</p>
-            <button class="profile__edit-button">
+            <button id="edit-profile" class="profile__edit-button" >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -137,7 +90,6 @@
               id=""
               placeholder=""
               class="popup__input"
-              required
             />
             <input
               type="text"
@@ -145,12 +97,11 @@
               id=""
               placeholder=""
               class="popup__input"
-              required
             />
             <input
               type="submit"
               name="submit"
-              id="submit"
+              id="submit-button"
               class="popup__button"
               value="Guardar"
             />
