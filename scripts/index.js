@@ -90,6 +90,7 @@ const popupElements = {
 
 let isPopupActive = false;
 let popupId;
+let deleteButtons;
 
 /**
  * @returns {DocumentFragment}
@@ -149,7 +150,21 @@ function renderInitialCards() {
     createCard(template, cardData);
     cardContainer.append(template);
   });
+  if (deleteButtons === undefined)
+    deleteButtons = Array.from(
+      document.querySelectorAll(".card__delete-button-svg")
+    );
+  deleteButtons.forEach((bttn) => {
+    bttn.addEventListener("click", (e) => {
+      deleteCard(e.target.closest(".card"));
+    })
+  });
+
   setCardsLikeButtonsEvent("Initial");
+}
+
+function deleteCard(card) {
+  card.remove();
 }
 
 function renderPopUp(id) {
