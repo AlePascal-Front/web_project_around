@@ -10,7 +10,7 @@ const addBttn = content.querySelector(".profile__add-button");
 
 const popup = content.querySelector(".popup");
 
-const initialCards = [
+const cards = [
   {
     name: "Acapulco",
     links: {
@@ -19,6 +19,7 @@ const initialCards = [
       smallSize: "../images/acapulco600w,450h.jpg",
     },
     alt: "picture of Acapulco",
+    origin: "initial",
   },
   {
     name: "Chichen Itza",
@@ -28,6 +29,7 @@ const initialCards = [
       smallSize: "../images/chichen-itza600w,400h.jpg",
     },
     alt: "picture of Chichen Itza",
+    origin: "initial",
   },
   {
     name: "Edinburgh",
@@ -37,6 +39,7 @@ const initialCards = [
       smallSize: "../images/edimburgo600w,400h.jpg",
     },
     alt: "picture of Edinburgh",
+    origin: "initial",
   },
   {
     name: "Louvre",
@@ -46,6 +49,7 @@ const initialCards = [
       smallSize: "../images/louvre-museum700w,467h.jpg",
     },
     alt: "picture of Louvre",
+    origin: "initial",
   },
   {
     name: "Shanghai",
@@ -55,6 +59,7 @@ const initialCards = [
       smallSize: "../images/shangai600w,400h.jpg",
     },
     alt: "picture of Shangai",
+    origin: "initial",
   },
   {
     name: "Tokyo",
@@ -64,6 +69,7 @@ const initialCards = [
       smallSize: "../images/tokyo600w,399h.jpg",
     },
     alt: "picture of Tokyo",
+    origin: "initial",
   },
 ];
 
@@ -91,19 +97,13 @@ const popupElements = {
 let isPopupActive = false;
 let popupId;
 let deleteButtons;
+let cardImages;
 
 /**
  * @returns {DocumentFragment}
  */
-function getCardsTemplate() {
-  return document.getElementById("card-template").content.cloneNode(true);
-}
-
-/**
- * @returns {DocumentFragment}
- */
-function getPopUpTemplate() {
-  return document.getElementById("popup-template").content.cloneNode(true);
+function getTemplate(id) {
+  return document.getElementById(id).content.cloneNode(true);
 }
 
 function createCard(template, cardData) {
@@ -115,13 +115,24 @@ function createCard(template, cardData) {
 
 function createUserCard(temp = null, cardD) {
   debugger;
-  temp = getCardsTemplate();
+  temp = getTemplate("card-template");
   const cardTitle = cardD[0];
   const cardLink = cardD[1];
+  const imageAlt = "user card";
+  const origin = "user";
 
   temp.querySelector(".card__title").textContent = cardTitle;
   temp.querySelector(".card__image").src = cardLink;
+  temp.querySelector(".card__image").alt = imageAlt;
   let cardContainer = document.querySelector(".cards__grid");
+
+  cards.push({
+    name: cardTitle,
+    link: cardLink,
+    alt: imageAlt,
+    origin: origin,
+  });
+
   cardContainer.prepend(temp);
   setCardsLikeButtonsEvent("User Card");
 }
@@ -145,22 +156,54 @@ function createPopup(template, id) {
 
 function renderInitialCards() {
   let cardContainer = document.querySelector(".cards__grid");
-  initialCards.forEach((cardData) => {
-    let template = getCardsTemplate();
-    createCard(template, cardData);
+  cards.forEach((card) => {
+    let template = getTemplate("card-template");
+    createCard(template, card);
     cardContainer.append(template);
   });
   if (deleteButtons === undefined)
     deleteButtons = Array.from(
       document.querySelectorAll(".card__delete-button-svg")
     );
+
+  if (cardImages === undefined)
+    cardImages = Array.from(document.querySelectorAll(".card__image"));
+
   deleteButtons.forEach((bttn) => {
     bttn.addEventListener("click", (e) => {
       deleteCard(e.target.closest(".card"));
-    })
+    });
+  });
+  setCardsLikeButtonsEvent("Initial");
+}
+
+function setVisualizeImages(cardIndex) {
+  debugger;
+  let opaqueDiv = document.createElement("div");
+  opaqueDiv.classList.add("page__opaque-layout");
+  page.insertAdjacentElement("afterbegin", opaqueDiv);
+  const template = getTemplate("visualize-img-template");
+  const image = template.querySelector(".visualize-img__image");
+  const imageContainer = document.querySelector(".visualize-img");
+  const paragraphImageName = template.querySelector(".visualize-img__img-name");
+  const closeIcon = template.querySelector(".visualize-img__close-icon");
+
+  if (cards[cardIndex].origin === "initial")
+    image.src = cards[cardIndex].links.originalSize;
+  else if (cards[cardIndex].origin === "user")
+    image.src = cards[cardIndex].link;
+
+  imageContainer.classList.add("visualize-img_opened");
+  paragraphImageName.textContent = cards[cardIndex].name;
+  imageContainer.append(template);
+  closeIcon.addEventListener("click", (e) => {
+    const parent = e.target.closest(".visualize-img");
+    parent.classList.remove("visualize-img_opened");
+    opaqueDiv.classList.remove("page__opaque-layout");
+    parent.children[0].remove();
   });
 
-  setCardsLikeButtonsEvent("Initial");
+  console.log("hecho");
 }
 
 function deleteCard(card) {
@@ -168,7 +211,7 @@ function deleteCard(card) {
 }
 
 function renderPopUp(id) {
-  let template = getPopUpTemplate();
+  const template = getTemplate("popup-template");
 
   if (!isPopupActive) createPopup(template, id);
 
@@ -316,3 +359,16 @@ addBttn.addEventListener("click", (e) => {
   popupId = e.target.closest(".profile__add-button").id;
   handlePopup(popupId);
 });
+if (cardImages !== undefined) {
+  console.log("ejecutado");
+  cardImages.forEach((cardImage) => {
+    cardImage.addEventListener("click", (e) => {
+      const children = Array.from(e.target.parentNode.parentNode.children);
+      console.log(children);
+      const cardIndx = children.indexOf(e.target.closest(".card"));
+      console.log(cardIndx);
+      if (cardIndx !== -1) setVisualizeImages(cardIndx);
+      else console.log("error");
+    });
+  });
+}
