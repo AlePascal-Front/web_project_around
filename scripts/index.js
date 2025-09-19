@@ -122,6 +122,7 @@ function createUserCard(temp = null, cardD) {
   temp.querySelector(".card__image").src = cardLink;
   let cardContainer = document.querySelector(".cards__grid");
   cardContainer.prepend(temp);
+  setCardsLikeButtonsEvent("User Card");
 }
 
 function createPopup(template, id) {
@@ -148,6 +149,7 @@ function renderInitialCards() {
     createCard(template, cardData);
     cardContainer.append(template);
   });
+  setCardsLikeButtonsEvent("Initial");
 }
 
 function renderPopUp(id) {
@@ -223,8 +225,26 @@ function getUserInput(inputs) {
   return [firstUserInput, secondUserInput];
 }
 
+function setCardsLikeButtonsEvent(renderingType) {
+  if (renderingType === "Initial") {
+    const likeButtons = Array.from(
+      document.querySelectorAll(".card__like-button-svg")
+    );
+    likeButtons.forEach((bttn) => {
+      bttn.addEventListener("click", () => {
+        bttn.classList.toggle("card__like-button-svg_active");
+      });
+    });
+  } else if (renderingType === "User Card") {
+    const likeButton = document.querySelector(".card__like-button-svg");
+    likeButton.addEventListener("click", () => {
+      likeButton.classList.toggle("card__like-button-svg_active");
+    });
+  }
+}
+
 function hidePopUp(e) {
-  debugger
+  debugger;
   popup.classList.remove("popup_opened");
   document.querySelector(".page__opaque-layout")?.remove();
   isPopupActive = false;
