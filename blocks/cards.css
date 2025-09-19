@@ -21,6 +21,7 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .card__image {
@@ -30,6 +31,18 @@
   object-fit: cover;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+}
+
+.card__delete-button-svg {
+  position: absolute;
+  left: 90%;
+  top: 5%;
+  stroke: #000;
+}
+
+.card__delete-button-svg:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 
 .card__content {
