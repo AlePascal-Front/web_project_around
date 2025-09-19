@@ -32,7 +32,12 @@
           <div class="profile__content">
             <h1 class="profile__name">Jacques Cousteau</h1>
             <p class="profile__description">Explorateur</p>
-            <button id="edit-profile" class="profile__edit-button" >
+            <!-- 'aria-label' is for screen readers. Improves page accessibility -->
+            <button
+              id="edit-profile"
+              class="profile__edit-button"
+              aria-label="Edit profile"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -50,7 +55,14 @@
               </svg>
             </button>
           </div>
-          <button id="add-card" class="profile__add-button">+</button>
+          <!-- 'aria-label' is for screen readers. Improves page accessibility -->
+          <button
+            id="add-card"
+            class="profile__add-button"
+            aria-label="Add a card"
+          >
+            +
+          </button>
         </div>
         <section class="cards">
           <div class="cards__grid"></div>
