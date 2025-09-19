@@ -13,27 +13,57 @@ const popup = content.querySelector(".popup");
 const initialCards = [
   {
     name: "Acapulco",
-    link: "../images/acapulco.jpg",
+    links: {
+      originalSize: "../images/acapulco-original.jpg",
+      mediumSize: "../images/acapulco700w,525h.jpg",
+      smallSize: "../images/acapulco600w,450h.jpg",
+    },
+    alt: "picture of Acapulco",
   },
   {
     name: "Chichen Itza",
-    link: "../images/chichen-itza.jpg",
+    links: {
+      originalSize: "../images/chichen-itza-original.jpg",
+      mediumSize: "../images/chichen-itza700w,467h.jpg",
+      smallSize: "../images/chichen-itza600w,400h.jpg",
+    },
+    alt: "picture of Chichen Itza",
   },
   {
     name: "Edinburgh",
-    link: "../images/edimburgo.jpg",
+    links: {
+      originalSize: "../images/edimburgo-original.jpg",
+      mediumSize: "../images/edimburgo700w,467h.jpg",
+      smallSize: "../images/edimburgo600w,400h.jpg",
+    },
+    alt: "picture of Edinburgh",
   },
   {
     name: "Louvre",
-    link: "../images/louvre-museum.jpg",
+    links: {
+      originalSize: "../images/louvre-museum-original.jpg",
+      mediumSize: "../images/louvre-museum600w,400h.jpg",
+      smallSize: "../images/louvre-museum700w,467h.jpg",
+    },
+    alt: "picture of Louvre",
   },
   {
     name: "Shanghai",
-    link: "../images/shangai.jpg",
+    links: {
+      originalSize: "../images/shangai-original.jpg",
+      mediumSize: "../images/shangai700w,467h.jpg",
+      smallSize: "../images/shangai600w,400h.jpg",
+    },
+    alt: "picture of Shangai",
   },
   {
     name: "Tokyo",
-    link: "../images/tokyo.jpg",
+    links: {
+      originalSize: "../images/tokyo-original.jpg",
+      mediumSize: "../images/tokyo700w,466h.jpg",
+      smallSize: "../images/tokyo600w,399h.jpg",
+    },
+    alt: "picture of Tokyo",
   },
 ];
 
@@ -77,11 +107,25 @@ function getPopUpTemplate() {
 
 function createCard(template, cardData) {
   template.querySelector(".card__title").textContent = cardData.name;
-  template.querySelector(".card__image").src = cardData.link;
+  const imageElem = template.querySelector(".card__image");
+  imageElem.srcset = `${cardData.links.mediumSize}, ${cardData.links.smallSize}`;
+  imageElem.alt = `${cardData.alt}`;
+}
+
+function createUserCard(temp = null, cardD) {
+  debugger;
+  temp = getCardsTemplate();
+  const cardTitle = cardD[0];
+  const cardLink = cardD[1];
+
+  temp.querySelector(".card__title").textContent = cardTitle;
+  temp.querySelector(".card__image").src = cardLink;
+  let cardContainer = document.querySelector(".cards__grid");
+  cardContainer.prepend(temp);
 }
 
 function createPopup(template, id) {
-  debugger
+  debugger;
   console.log(id);
   template.querySelector(".popup__close-icon").src =
     popupElements[id].closeButton;
@@ -109,20 +153,20 @@ function renderInitialCards() {
 function renderPopUp(id) {
   let template = getPopUpTemplate();
 
-  if(!isPopupActive) createPopup(template, id);
+  if (!isPopupActive) createPopup(template, id);
 
   let appended = popup.appendChild(template);
-  console.log(appended)
+  console.log(appended);
 
   Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
     input.addEventListener("keypress", (e) => {
-      if(e.code === "Enter") {
+      if (e.code === "Enter") {
         e.preventDefault();
-        handleSubmit();
+        handleSubmit(e);
       }
     });
     input.addEventListener("input", () => {
-      if(input.nextSibling.tagName === "p") {
+      if (input.nextSibling.tagName === "p") {
         input.nextSibling.remove();
       }
     });
@@ -130,10 +174,12 @@ function renderPopUp(id) {
 
   popup.querySelector(".popup__container").addEventListener("submit", (e) => {
     e.preventDefault();
-    handleSubmit();
+    handleSubmit(e);
   });
 
-  popup.querySelector(".popup__close-button").addEventListener("click", hidePopUp)
+  popup
+    .querySelector(".popup__close-button")
+    .addEventListener("click", hidePopUp);
 
   showPopUp(appended);
 }
@@ -178,6 +224,7 @@ function getUserInput(inputs) {
 }
 
 function hidePopUp(e) {
+  debugger
   popup.classList.remove("popup_opened");
   document.querySelector(".page__opaque-layout")?.remove();
   isPopupActive = false;
@@ -204,7 +251,7 @@ function handlePopup() {
   renderPopUp(popupId);
 }
 
-function handleSubmit() {
+function handleSubmit(e) {
   userInfo = getUserInput(popupElements[popupId].inputFields);
   emptyFields = getEmptyFields(popupElements[popupId].inputFields);
 
@@ -216,7 +263,7 @@ function handleSubmit() {
   if (popupId === "edit-profile") {
     updateUserProfile(userInfo);
   } else {
-    // call function for rendering user card
+    createUserCard(null, userInfo);
   }
   hidePopUp(e);
 }
