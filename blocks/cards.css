@@ -65,7 +65,7 @@
   opacity: 0.5;
 }
 
-.card__like-button-svg:active {
+.card__like-button-svg_active {
   fill: #000;
 }
 
