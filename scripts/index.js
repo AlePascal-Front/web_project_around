@@ -125,6 +125,7 @@ function createUserCard(temp = null, cardD) {
   temp.querySelector(".card__image").src = cardLink;
   temp.querySelector(".card__image").alt = imageAlt;
   let cardContainer = document.querySelector(".cards__grid");
+  console.log(cardContainer);
 
   cards.push({
     name: cardTitle,
@@ -132,6 +133,16 @@ function createUserCard(temp = null, cardD) {
     alt: imageAlt,
     origin: origin,
   });
+
+  if (
+    cardContainer.firstElementChild.nextElementSibling.classList.contains(
+      "cards__no-cards-msg"
+    )
+  ) {
+    cardContainer.classList.remove("cards__flex");
+    // removes all children when no argument is passed
+    cardContainer.replaceChildren();
+  }
 
   cardContainer.prepend(temp);
   setCardsLikeButtonsEvent("User Card");
@@ -171,7 +182,30 @@ function renderInitialCards() {
 
   deleteButtons.forEach((bttn) => {
     bttn.addEventListener("click", (e) => {
+      debugger;
       deleteCard(e.target.closest(".card"));
+
+      if (cardContainer.children.length > 0) return;
+      else if (cardContainer.children.length === 0) {
+        const noCardsParagraph = document.createElement("p");
+        const svgCode = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+</svg>
+`;
+        const svgContainer = document.createElement("div");
+        const svg = document.createElement("svg");
+        svg.innerHTML = svgCode;
+        cardContainer.classList.add("cards__flex");
+        svgContainer.insertAdjacentHTML("afterbegin", svgCode);
+
+        noCardsParagraph.classList.add("cards__no-cards-msg");
+        noCardsParagraph.textContent =
+          'Sin lugares que mostrar. ¡Haz clic en el botón "+" para añadir!';
+        svg.firstChild.classList.add("cards__no-cards-svg");
+
+        cardContainer.append(svg);
+        cardContainer.append(noCardsParagraph);
+      }
     });
   });
   setCardsLikeButtonsEvent("Initial");
@@ -323,6 +357,7 @@ function showPopUp(appendedPopup) {
 }
 
 function handlePopup() {
+  // if there's another popup present
   if (popup.children.length > 0) {
     popup.children[0].remove();
   }
@@ -340,7 +375,7 @@ function handleSubmit(e) {
 
   if (popupId === "edit-profile") {
     updateUserProfile(userInfo);
-  } else {
+  } else if (popupId === "add-card") {
     createUserCard(null, userInfo);
   }
   hidePopUp(e);
