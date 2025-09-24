@@ -42,7 +42,7 @@ const cards = [
     name: "Louvre",
     links: {
       originalSize: "../images/louvre-museum-original.jpg",
-      smallSize: "../images/louvre-museum700w,467h.jpg",
+      smallSize: "../images/louvre-museum600w,400h.jpg",
     },
     alt: "picture of Louvre",
     origin: "initial",
@@ -108,7 +108,6 @@ function createCard(template, cardData) {
 }
 
 function createUserCard(temp = null, cardD) {
-  debugger;
   temp = getTemplate("card-template");
   const cardTitle = cardD[0];
   const cardLink = cardD[1];
@@ -119,7 +118,6 @@ function createUserCard(temp = null, cardD) {
   temp.querySelector(".card__image").src = cardLink;
   temp.querySelector(".card__image").alt = imageAlt;
   let cardContainer = document.querySelector(".cards__grid");
-  console.log(cardContainer);
 
   cards.push({
     name: cardTitle,
@@ -143,8 +141,6 @@ function createUserCard(temp = null, cardD) {
 }
 
 function createPopup(template, id) {
-  debugger;
-  console.log(id);
   template.querySelector(".popup__close-icon").src =
     popupElements[id].closeButton;
   template.querySelector(".popup__title").textContent = popupElements[id].title;
@@ -176,7 +172,6 @@ function renderInitialCards() {
 
   deleteButtons.forEach((bttn) => {
     bttn.addEventListener("click", (e) => {
-      debugger;
       deleteCard(e.target.closest(".card"));
 
       if (cardContainer.children.length > 0) return;
@@ -206,7 +201,6 @@ function renderInitialCards() {
 }
 
 function setVisualizeImages(cardIndex) {
-  debugger;
   let opaqueDiv = document.createElement("div");
   opaqueDiv.classList.add("page__opaque-layout");
   page.insertAdjacentElement("afterbegin", opaqueDiv);
@@ -230,8 +224,6 @@ function setVisualizeImages(cardIndex) {
     opaqueDiv.classList.remove("page__opaque-layout");
     parent.children[0].remove();
   });
-
-  console.log("hecho");
 }
 
 function deleteCard(card) {
@@ -244,7 +236,6 @@ function renderPopUp(id) {
   if (!isPopupActive) createPopup(template, id);
 
   let appended = popup.appendChild(template);
-  console.log(appended);
 
   Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
     input.addEventListener("keypress", (e) => {
@@ -330,7 +321,6 @@ function setCardsLikeButtonsEvent(renderingType) {
 }
 
 function hidePopUp(e) {
-  debugger;
   popup.classList.remove("popup_opened");
   document.querySelector(".page__opaque-layout")?.remove();
   isPopupActive = false;
@@ -340,7 +330,6 @@ function hidePopUp(e) {
 }
 
 function showPopUp(appendedPopup) {
-  // debugger;
   if (appendedPopup) {
     document.querySelector(".popup").classList.add("popup_opened");
     let opaqueDiv = document.createElement("div");
@@ -389,15 +378,12 @@ addBttn.addEventListener("click", (e) => {
   handlePopup(popupId);
 });
 if (cardImages !== undefined) {
-  console.log("ejecutado");
   cardImages.forEach((cardImage) => {
     cardImage.addEventListener("click", (e) => {
       const children = Array.from(e.target.parentNode.parentNode.children);
-      console.log(children);
       const cardIndx = children.indexOf(e.target.closest(".card"));
-      console.log(cardIndx);
       if (cardIndx !== -1) setVisualizeImages(cardIndx);
-      else console.log("error");
+      else console.error("ERROR: Something went wrong");
     });
   });
 }
