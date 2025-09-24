@@ -23,6 +23,7 @@
       </header>
       <main class="content">
         <div class="popup"></div>
+        <div class="visualize-img"></div>
         <div class="profile">
           <img
             src="images/person-photo.jpeg"
@@ -109,7 +110,7 @@
         </template>
         <template id="popup-template">
           <form action="#" class="popup__container">
-            <button class="popup__close-button">
+            <button class="popup__close-button" aria-label="Close popup">
               <img class="popup__close-icon" />
             </button>
             <h2 class="popup__title"></h2>
@@ -135,6 +136,18 @@
               value="Guardar"
             />
           </form>
+        </template>
+        <template id="visualize-img-template">
+          <div class="visualize-img__container">
+            <button class="visualize-img__close-button" aria-label="Close">
+              <img
+                src="images/Close Icon.png"
+                class="visualize-img__close-icon"
+              />
+            </button>
+            <img class="visualize-img__image" />
+            <p class="visualize-img__img-name"></p>
+          </div>
         </template>
       </main>
       <footer class="footer">

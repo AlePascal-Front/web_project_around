@@ -40,6 +40,10 @@
   border-top-left-radius: 10px;
 }
 
+.card__image:hover {
+  cursor: pointer;
+}
+
 .card__delete-button-svg {
   position: absolute;
   left: 90%;
