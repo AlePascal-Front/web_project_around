@@ -15,7 +15,6 @@ const cards = [
     name: "Acapulco",
     links: {
       originalSize: "../images/acapulco-original.jpg",
-      mediumSize: "../images/acapulco700w,525h.jpg",
       smallSize: "../images/acapulco600w,450h.jpg",
     },
     alt: "picture of Acapulco",
@@ -25,7 +24,6 @@ const cards = [
     name: "Chichen Itza",
     links: {
       originalSize: "../images/chichen-itza-original.jpg",
-      mediumSize: "../images/chichen-itza700w,467h.jpg",
       smallSize: "../images/chichen-itza600w,400h.jpg",
     },
     alt: "picture of Chichen Itza",
@@ -35,7 +33,6 @@ const cards = [
     name: "Edinburgh",
     links: {
       originalSize: "../images/edimburgo-original.jpg",
-      mediumSize: "../images/edimburgo700w,467h.jpg",
       smallSize: "../images/edimburgo600w,400h.jpg",
     },
     alt: "picture of Edinburgh",
@@ -45,7 +42,6 @@ const cards = [
     name: "Louvre",
     links: {
       originalSize: "../images/louvre-museum-original.jpg",
-      mediumSize: "../images/louvre-museum600w,400h.jpg",
       smallSize: "../images/louvre-museum700w,467h.jpg",
     },
     alt: "picture of Louvre",
@@ -55,7 +51,6 @@ const cards = [
     name: "Shanghai",
     links: {
       originalSize: "../images/shangai-original.jpg",
-      mediumSize: "../images/shangai700w,467h.jpg",
       smallSize: "../images/shangai600w,400h.jpg",
     },
     alt: "picture of Shangai",
@@ -65,7 +60,6 @@ const cards = [
     name: "Tokyo",
     links: {
       originalSize: "../images/tokyo-original.jpg",
-      mediumSize: "../images/tokyo700w,466h.jpg",
       smallSize: "../images/tokyo600w,399h.jpg",
     },
     alt: "picture of Tokyo",
@@ -109,7 +103,7 @@ function getTemplate(id) {
 function createCard(template, cardData) {
   template.querySelector(".card__title").textContent = cardData.name;
   const imageElem = template.querySelector(".card__image");
-  imageElem.srcset = `${cardData.links.mediumSize}, ${cardData.links.smallSize}`;
+  imageElem.srcset = `${cardData.links.smallSize}`;
   imageElem.alt = `${cardData.alt}`;
 }
 
