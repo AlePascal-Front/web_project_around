@@ -13,55 +13,37 @@ const popup = content.querySelector(".popup");
 const cards = [
   {
     name: "Acapulco",
-    links: {
-      originalSize: "../images/acapulco-original.jpg",
-      smallSize: "../images/acapulco600w,450h.jpg",
-    },
+    link: "../images/acapulco600w,450h.jpg",
     alt: "picture of Acapulco",
     origin: "initial",
   },
   {
     name: "Chichen Itza",
-    links: {
-      originalSize: "../images/chichen-itza-original.jpg",
-      smallSize: "../images/chichen-itza600w,400h.jpg",
-    },
+    link: "../images/chichen-itza600w,400h.jpg",
     alt: "picture of Chichen Itza",
     origin: "initial",
   },
   {
     name: "Edinburgh",
-    links: {
-      originalSize: "../images/edimburgo-original.jpg",
-      smallSize: "../images/edimburgo600w,400h.jpg",
-    },
+    link: "../images/edimburgo600w,400h.jpg",
     alt: "picture of Edinburgh",
     origin: "initial",
   },
   {
     name: "Louvre",
-    links: {
-      originalSize: "../images/louvre-museum-original.jpg",
-      smallSize: "../images/louvre-museum600w,400h.jpg",
-    },
+    link: "../images/louvre-museum600w,400h.jpg",
     alt: "picture of Louvre",
     origin: "initial",
   },
   {
     name: "Shanghai",
-    links: {
-      originalSize: "../images/shangai-original.jpg",
-      smallSize: "../images/shangai600w,400h.jpg",
-    },
+    link: "../images/shangai600w,400h.jpg",
     alt: "picture of Shangai",
     origin: "initial",
   },
   {
     name: "Tokyo",
-    links: {
-      originalSize: "../images/tokyo-original.jpg",
-      smallSize: "../images/tokyo600w,399h.jpg",
-    },
+    link: "../images/tokyo600w,399h.jpg",
     alt: "picture of Tokyo",
     origin: "initial",
   },
@@ -103,7 +85,7 @@ function getTemplate(id) {
 function createCard(template, cardData) {
   template.querySelector(".card__title").textContent = cardData.name;
   const imageElem = template.querySelector(".card__image");
-  imageElem.srcset = `${cardData.links.smallSize}`;
+  imageElem.srcset = `${cardData.link}`;
   imageElem.alt = `${cardData.alt}`;
 }
 
@@ -211,7 +193,7 @@ function setVisualizeImages(cardIndex) {
   const closeIcon = template.querySelector(".visualize-img__close-icon");
 
   if (cards[cardIndex].origin === "initial")
-    image.src = cards[cardIndex].links.originalSize;
+    image.src = cards[cardIndex].link;
   else if (cards[cardIndex].origin === "user")
     image.src = cards[cardIndex].link;
 
