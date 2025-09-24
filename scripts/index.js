@@ -119,6 +119,19 @@ function createUserCard(temp = null, cardD) {
   }
 
   cardContainer.prepend(temp);
+
+  cardContainer
+    .querySelector(".card__delete-button-svg")
+    .addEventListener("click", (e) => {
+      const cardToRemove = e.target.closest(".card");
+      deleteCard(cardToRemove);
+    });
+
+  cardContainer.querySelector(".card__image").addEventListener("click", (e) => {
+    const imageToRender = e.currentTarget;
+    setVisualizeImages(null, imageToRender, cardTitle, origin);
+  });
+
   setCardsLikeButtonsEvent("User Card");
 }
 
@@ -182,7 +195,12 @@ function renderInitialCards() {
   setCardsLikeButtonsEvent("Initial");
 }
 
-function setVisualizeImages(cardIndex) {
+function setVisualizeImages(
+  cardIndex = null,
+  imageElement = null,
+  imageTitle = null,
+  imageOrigin
+) {
   let opaqueDiv = document.createElement("div");
   opaqueDiv.classList.add("page__opaque-layout");
   page.insertAdjacentElement("afterbegin", opaqueDiv);
@@ -192,13 +210,23 @@ function setVisualizeImages(cardIndex) {
   const paragraphImageName = template.querySelector(".visualize-img__img-name");
   const closeIcon = template.querySelector(".visualize-img__close-icon");
 
-  if (cards[cardIndex].origin === "initial")
-    image.src = cards[cardIndex].link;
-  else if (cards[cardIndex].origin === "user")
-    image.src = cards[cardIndex].link;
+  if (
+    cardIndex === null &&
+    imageElement !== null &&
+    imageTitle !== null &&
+    imageOrigin === "user"
+  ) {
+    paragraphImageName.textContent = imageTitle;
+    image.src = imageElement.src;
+    image.alt = imageElement.alt;
+  }
+  image.src = cardIndex !== null ? cards[cardIndex].link : image.src;
 
   imageContainer.classList.add("visualize-img_opened");
-  paragraphImageName.textContent = cards[cardIndex].name;
+  paragraphImageName.textContent =
+    paragraphImageName.textContent === ""
+      ? cards[cardIndex].name
+      : paragraphImageName.textContent;
   imageContainer.append(template);
   closeIcon.addEventListener("click", (e) => {
     const parent = e.target.closest(".visualize-img");
@@ -362,8 +390,7 @@ addBttn.addEventListener("click", (e) => {
 if (cardImages !== undefined) {
   cardImages.forEach((cardImage) => {
     cardImage.addEventListener("click", (e) => {
-      const children = Array.from(e.target.parentNode.parentNode.children);
-      const cardIndx = children.indexOf(e.target.closest(".card"));
+      const cardIndx = cardImages.indexOf(e.currentTarget);
       if (cardIndx !== -1) setVisualizeImages(cardIndx);
       else console.error("ERROR: Something went wrong");
     });
