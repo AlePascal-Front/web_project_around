@@ -52,12 +52,24 @@ const cards = [
 const popupElements = {
   "edit-profile": {
     title: "Editar perfil",
-    placeholder1: "Nombre",
-    placeholder2: "Descripción",
-    nameAndId1: "userName",
-    nameAndId2: "userDescription",
     closeButton: "../images/Close Icon.png",
-    inputFields: [],
+    hasValidation: false,
+    input_1: {
+      placeholder: "Nombre",
+      name: "userName",
+      id: "userName",
+      inputType: "text",
+      lengthRange: ["2", "40"],
+      isRequired: true,
+    },
+    input_2: {
+      placeholder: "Descripción",
+      name: "userDescription",
+      id: "userDescription",
+      inputType: "text",
+      lengthRange: ["2", "200"],
+      isRequired: true,
+    },
   },
   "add-card": {
     title: "Añadir tarjeta",
@@ -66,11 +78,28 @@ const popupElements = {
     closeButton: "../images/Close Icon.png",
     nameAndId1: "userTitle",
     nameAndId2: "userLink",
-    inputFields: [],
+    hasValidation: false,
+    input_1: {
+      placeholder: "Título",
+      name: "userTitle",
+      id: "userTitle",
+      inputType: "text",
+      lengthRange: ["2", "30"],
+      isRequired: true,
+    },
+    input_2: {
+      placeholder: "Enlace",
+      name: "userLink",
+      id: "userLink",
+      inputType: "url",
+      lengthRange: null,
+      isRequired: true,
+    },
   },
 };
 
 let isPopupActive = false;
+let popupHasValidation = false;
 let popupId;
 let deleteButtons;
 let cardImages;
@@ -142,10 +171,18 @@ function createPopup(template, id) {
 
   Array.from(template.querySelectorAll(".popup__input")).forEach(
     (input, indx) => {
-      input.name = popupElements[id][`nameAndId${indx + 1}`];
-      input.id = popupElements[id][`nameAndId${indx + 1}`];
-      input.placeholder = popupElements[id][`placeholder${indx + 1}`];
-      popupElements[id].inputFields.push(input);
+      input.placeholder =
+        popupElements[id][`input_${indx + 1}`][`placeholder${indx + 1}`];
+      input.name = popupElements[id][`input_${indx + 1}`].name;
+      input.id = popupElements[id][`input_${indx + 1}`].id;
+      input.type = popupElements[id][`input_${indx + 1}`].inputType;
+      input.minlength = popupElements[id][`input_${indx + 1}`].lengthRange[0];
+      input.maxlength = popupElements[id][`input_${indx + 1}`].lengthRange[1];
+
+      let required = popupElements[id][`input_${indx + 1}`].isRequired;
+      if(required) {
+        input.setAttribute("required", "");
+      }
     }
   );
 }
@@ -247,16 +284,13 @@ function renderPopUp(id) {
 
   let appended = popup.appendChild(template);
 
+  console.log(typeof appended, appended);
+
   Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
     input.addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
         e.preventDefault();
         handleSubmit(e);
-      }
-    });
-    input.addEventListener("input", () => {
-      if (input.nextSibling.tagName === "p") {
-        input.nextSibling.remove();
       }
     });
   });
@@ -273,30 +307,14 @@ function renderPopUp(id) {
   showPopUp(appended);
 }
 
-function getEmptyFields(inputFields) {
-  let empty = {};
-  for (let i = 0; i < inputFields.length; i++) {
-    if (inputFields[i].value === "") {
-      empty[i] = inputFields[i];
-    }
-  }
-
-  return Object.keys(empty).length === 0 ? null : empty;
+function showWarning(inputElement, spanElement, warningTxt) {
+  inputElement.classList.add("popup__error-msg");
+  spanElement.textContent = warningTxt;
 }
 
-function showWarning(emptyF) {
-  for (const key in emptyF) {
-    // conditional that prevents creating multiple instances of the same warning msg
-    if (emptyF[key].nextSibling.tagName === "P") {
-      continue;
-    }
-    warningMsg = document.createElement("p");
-    warningMsg.textContent = "* Por favor, llena todos los campos";
-    warningMsg.classList.add("popup__warning-msg");
-    // warningMsg.style.position = "absolute";
-
-    emptyF[key].insertAdjacentElement("afterend", warningMsg);
-  }
+function hideWarning(inputElement, spanElement) {
+  inputElement.classList.remove("popup__error-msg");
+  spanElement.textContent = "";
 }
 
 function updateUserProfile(inputArr) {
@@ -307,7 +325,6 @@ function updateUserProfile(inputArr) {
 function getUserInput(inputs) {
   let firstUserInput = inputs[0].value;
   let secondUserInput = inputs[1].value;
-  popupElements[popupId].inputFields = [];
 
   return [firstUserInput, secondUserInput];
 }
@@ -344,9 +361,75 @@ function showPopUp(appendedPopup) {
     document.querySelector(".popup").classList.add("popup_opened");
     let opaqueDiv = document.createElement("div");
     opaqueDiv.classList.add("page__opaque-layout");
+    const formContainer = page.querySelector(".popup");
+    enableValidation(formContainer);
     page.insertAdjacentElement("afterbegin", opaqueDiv);
   }
   isPopupActive = true;
+}
+
+function enableValidation(formContainer) {
+  if (
+    popupElements["add-card"].popupHasValidation &&
+    popupElements["edit-profile"].popupHasValidation
+  ) {
+    return;
+  }
+  // validating if its the "add new place popup"
+  const popupTitle = formContainer.querySelector(".popup__title").textContent;
+
+  if (popupTitle === popupElements["edit-profile"].title) {
+    // begin agreggating validation
+    const popupFieldsets = Array.from(
+      formContainer.querySelectorAll(".popup__set")
+    );
+
+    popupFieldsets.forEach((fieldset) => {
+      const fieldInputs = Array.from(fieldset.children);
+      fieldInputs.forEach((fI) => {
+        if (fI instanceof HTMLInputElement) {
+          fI.addEventListener("input", () => {
+            const spanElement = fieldset.nextElementSibling;
+            console.log(spanElement);
+            console.log(fI.validity);
+            const errorMessage = fI.validationMessage;
+
+            if (!fI.validity.valid) {
+              showWarning(fI, spanElement, errorMessage);
+            } else {
+              hideWarning(fI, spanElement);
+            }
+          });
+        }
+      });
+    });
+  } else if (popupTitle === popupElements["add-card"].popupHasValidation) {
+    // begin agreggating validation
+    const popupFieldsets = Array.from(
+      formContainer.querySelectorAll(".popup__set")
+    );
+
+    popupFieldsets.forEach((fieldset) => {
+      const fieldInputs = Array.from(fieldset.children);
+      fieldInputs.forEach((fI) => {
+        if (fI instanceof HTMLInputElement) {
+          fI.addEventListener("input", () => {
+            const spanElement = fieldset.querySelector(".popup__error-msg");
+            console.log(spanElement);
+            console.log(fI.validity);
+            const errorMessage = fI.validationMessage;
+
+            if (!fI.validity.valid) {
+              showWarning(fI, spanElement, errorMessage);
+            } else {
+              hideWarning(fI, spanElement);
+            }
+          });
+        }
+      });
+    });
+  }
+  popupHasValidation = true;
 }
 
 function handlePopup() {
@@ -358,14 +441,6 @@ function handlePopup() {
 }
 
 function handleSubmit(e) {
-  userInfo = getUserInput(popupElements[popupId].inputFields);
-  emptyFields = getEmptyFields(popupElements[popupId].inputFields);
-
-  if (emptyFields !== null) {
-    showWarning(emptyFields);
-    return;
-  }
-
   if (popupId === "edit-profile") {
     updateUserProfile(userInfo);
   } else if (popupId === "add-card") {
