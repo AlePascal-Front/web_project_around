@@ -84,7 +84,7 @@ const popupElements = {
       name: "userTitle",
       id: "userTitle",
       inputType: "text",
-      lengthRange: ["2", "30"],
+      lengthRange: [2, 30],
       isRequired: true,
     },
     input_2: {
@@ -99,7 +99,6 @@ const popupElements = {
 };
 
 let isPopupActive = false;
-let popupHasValidation = false;
 let popupId;
 let deleteButtons;
 let cardImages;
@@ -168,19 +167,24 @@ function createPopup(template, id) {
   template.querySelector(".popup__close-icon").src =
     popupElements[id].closeButton;
   template.querySelector(".popup__title").textContent = popupElements[id].title;
+  template.querySelector(".popup__container").id = id;
 
   Array.from(template.querySelectorAll(".popup__input")).forEach(
     (input, indx) => {
-      input.placeholder =
-        popupElements[id][`input_${indx + 1}`][`placeholder${indx + 1}`];
+      console.log(indx);
+      input.placeholder = popupElements[id][`input_${indx + 1}`].placeholder;
       input.name = popupElements[id][`input_${indx + 1}`].name;
       input.id = popupElements[id][`input_${indx + 1}`].id;
       input.type = popupElements[id][`input_${indx + 1}`].inputType;
-      input.minlength = popupElements[id][`input_${indx + 1}`].lengthRange[0];
-      input.maxlength = popupElements[id][`input_${indx + 1}`].lengthRange[1];
+
+      let lengthRang = popupElements[id][`input_${indx + 1}`].lengthRange;
+      if (lengthRang != null) {
+        input.setAttribute("minlength", lengthRang[0]);
+        input.setAttribute("maxlength", lengthRang[1]);
+      }
 
       let required = popupElements[id][`input_${indx + 1}`].isRequired;
-      if(required) {
+      if (required) {
         input.setAttribute("required", "");
       }
     }
@@ -347,13 +351,15 @@ function setCardsLikeButtonsEvent(renderingType) {
   }
 }
 
-function hidePopUp(e) {
+function hidePopUp(e = null) {
   popup.classList.remove("popup_opened");
   document.querySelector(".page__opaque-layout")?.remove();
   isPopupActive = false;
 
-  // prevents scroll to top of the page when clicking close button
-  e.preventDefault();
+  if (e !== null) {
+    // prevents scroll to top of the page when clicking close button
+    e.preventDefault();
+  }
 }
 
 function showPopUp(appendedPopup) {
@@ -363,22 +369,29 @@ function showPopUp(appendedPopup) {
     opaqueDiv.classList.add("page__opaque-layout");
     const formContainer = page.querySelector(".popup");
     enableValidation(formContainer);
+    opaqueDiv.addEventListener("click", () => hidePopUp());
     page.insertAdjacentElement("afterbegin", opaqueDiv);
   }
   isPopupActive = true;
 }
 
+function areAllValidated(popupElems) {
+  for (const key in popupElems) {
+    if(!popupElems[key].hasValidation) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function enableValidation(formContainer) {
-  if (
-    popupElements["add-card"].popupHasValidation &&
-    popupElements["edit-profile"].popupHasValidation
-  ) {
+  if(areAllValidated(popupElements)) {
     return;
   }
-  // validating if its the "add new place popup"
-  const popupTitle = formContainer.querySelector(".popup__title").textContent;
 
-  if (popupTitle === popupElements["edit-profile"].title) {
+  const popupKey = formContainer.querySelector(".popup__container").id;
+
+  //if (popupTitle === popupElements["edit-profile"].title) {
     // begin agreggating validation
     const popupFieldsets = Array.from(
       formContainer.querySelectorAll(".popup__set")
@@ -403,33 +416,34 @@ function enableValidation(formContainer) {
         }
       });
     });
-  } else if (popupTitle === popupElements["add-card"].popupHasValidation) {
-    // begin agreggating validation
-    const popupFieldsets = Array.from(
-      formContainer.querySelectorAll(".popup__set")
-    );
+    popupElements[popupKey].hasValidation = true;
+  // } else if (popupTitle === popupElements["add-card"].title) {
+  //   // begin agreggating validation
+  //   const popupFieldsets = Array.from(
+  //     formContainer.querySelectorAll(".popup__set")
+  //   );
 
-    popupFieldsets.forEach((fieldset) => {
-      const fieldInputs = Array.from(fieldset.children);
-      fieldInputs.forEach((fI) => {
-        if (fI instanceof HTMLInputElement) {
-          fI.addEventListener("input", () => {
-            const spanElement = fieldset.querySelector(".popup__error-msg");
-            console.log(spanElement);
-            console.log(fI.validity);
-            const errorMessage = fI.validationMessage;
+  //   popupFieldsets.forEach((fieldset) => {
+  //     const fieldInputs = Array.from(fieldset.children);
+  //     fieldInputs.forEach((fI) => {
+  //       if (fI instanceof HTMLInputElement) {
+  //         fI.addEventListener("input", () => {
+  //           const spanElement = fieldset.querySelector(".popup__error-msg");
+  //           console.log(spanElement);
+  //           console.log(fI.validity);
+  //           const errorMessage = fI.validationMessage;
 
-            if (!fI.validity.valid) {
-              showWarning(fI, spanElement, errorMessage);
-            } else {
-              hideWarning(fI, spanElement);
-            }
-          });
-        }
-      });
-    });
-  }
-  popupHasValidation = true;
+  //           if (!fI.validity.valid) {
+  //             showWarning(fI, spanElement, errorMessage);
+  //           } else {
+  //             hideWarning(fI, spanElement);
+  //           }
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
+
 }
 
 function handlePopup() {
