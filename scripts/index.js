@@ -375,7 +375,7 @@ function hidePopUp(e = null) {
   }, 800); // 800ms = 0.8s
   isPopupActive = false;
 
-  document.removeEventListener("keypresss", handleKeyPressedWhilePopOpen);
+  document.removeEventListener("keydown", handleKeyPressedWhilePopOpen);
 
   if (e !== null) {
     // prevents scroll to top of the page when clicking close button
@@ -398,7 +398,7 @@ function showPopUp(appendedPopup) {
     opaqueDiv.classList.add("page__opaque-layout-in");
 
     // retrieve any key pressed and handle its behavior
-    document.addEventListener("keypress", (e) => {
+    document.addEventListener("keydown", (e) => {
       handleKeyPressedWhilePopOpen(e);
     });
 
