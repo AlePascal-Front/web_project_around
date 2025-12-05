@@ -377,7 +377,7 @@ function showPopUp(appendedPopup) {
 
 function areAllValidated(popupElems) {
   for (const key in popupElems) {
-    if(!popupElems[key].hasValidation) {
+    if (!popupElems[key].hasValidation) {
       return false;
     }
   }
@@ -385,65 +385,35 @@ function areAllValidated(popupElems) {
 }
 
 function enableValidation(formContainer) {
-  if(areAllValidated(popupElements)) {
+  if (areAllValidated(popupElements)) {
     return;
   }
 
   const popupKey = formContainer.querySelector(".popup__container").id;
+  const popupFieldsets = Array.from(
+    formContainer.querySelectorAll(".popup__set")
+  );
 
-  //if (popupTitle === popupElements["edit-profile"].title) {
-    // begin agreggating validation
-    const popupFieldsets = Array.from(
-      formContainer.querySelectorAll(".popup__set")
-    );
+  popupFieldsets.forEach((fieldset) => {
+    const fieldInputs = Array.from(fieldset.children);
+    fieldInputs.forEach((fI) => {
+      if (fI instanceof HTMLInputElement) {
+        fI.addEventListener("input", () => {
+          const spanElement = fieldset.nextElementSibling;
+          console.log(spanElement);
+          console.log(fI.validity);
+          const errorMessage = fI.validationMessage;
 
-    popupFieldsets.forEach((fieldset) => {
-      const fieldInputs = Array.from(fieldset.children);
-      fieldInputs.forEach((fI) => {
-        if (fI instanceof HTMLInputElement) {
-          fI.addEventListener("input", () => {
-            const spanElement = fieldset.nextElementSibling;
-            console.log(spanElement);
-            console.log(fI.validity);
-            const errorMessage = fI.validationMessage;
-
-            if (!fI.validity.valid) {
-              showWarning(fI, spanElement, errorMessage);
-            } else {
-              hideWarning(fI, spanElement);
-            }
-          });
-        }
-      });
+          if (!fI.validity.valid) {
+            showWarning(fI, spanElement, errorMessage);
+          } else {
+            hideWarning(fI, spanElement);
+          }
+        });
+      }
     });
-    popupElements[popupKey].hasValidation = true;
-  // } else if (popupTitle === popupElements["add-card"].title) {
-  //   // begin agreggating validation
-  //   const popupFieldsets = Array.from(
-  //     formContainer.querySelectorAll(".popup__set")
-  //   );
-
-  //   popupFieldsets.forEach((fieldset) => {
-  //     const fieldInputs = Array.from(fieldset.children);
-  //     fieldInputs.forEach((fI) => {
-  //       if (fI instanceof HTMLInputElement) {
-  //         fI.addEventListener("input", () => {
-  //           const spanElement = fieldset.querySelector(".popup__error-msg");
-  //           console.log(spanElement);
-  //           console.log(fI.validity);
-  //           const errorMessage = fI.validationMessage;
-
-  //           if (!fI.validity.valid) {
-  //             showWarning(fI, spanElement, errorMessage);
-  //           } else {
-  //             hideWarning(fI, spanElement);
-  //           }
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
-
+  });
+  popupElements[popupKey].hasValidation = true;
 }
 
 function handlePopup() {
