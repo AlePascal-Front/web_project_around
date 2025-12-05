@@ -338,9 +338,9 @@ function setCardsLikeButtonsEvent(renderingType) {
     const likeButtons = Array.from(
       document.querySelectorAll(".card__like-button-svg")
     );
-    likeButtons.forEach((bttn) => {
-      bttn.addEventListener("click", () => {
-        bttn.classList.toggle("card__like-button-svg_active");
+    likeButtons.forEach((likeBttn) => {
+      likeBttn.addEventListener("click", () => {
+        likeBttn.classList.toggle("card__like-button-svg_active");
       });
     });
   } else if (renderingType === "User Card") {
@@ -351,10 +351,31 @@ function setCardsLikeButtonsEvent(renderingType) {
   }
 }
 
+function handleKeyPressedWhilePopOpen(e) {
+  console.log("EventHandler triggered.");
+  if (e.key === "Escape") {
+    hidePopUp();
+  }
+}
+
 function hidePopUp(e = null) {
+  let opaqueDivClasses = page.querySelector(
+    ".page__opaque-layout_active"
+  ).classList;
+
+  /* add closing animation */
+  opaqueDivClasses.add("page__opaque-layout-out");
+
   popup.classList.remove("popup_opened");
-  document.querySelector(".page__opaque-layout")?.remove();
+
+  /* delay to let animation play */
+  /* after its finished played, remove bckg */
+  setTimeout(() => {
+    page.querySelector(".page__opaque-layout_active").remove();
+  }, 800); // 800ms = 0.8s
   isPopupActive = false;
+
+  document.removeEventListener("keypresss", handleKeyPressedWhilePopOpen);
 
   if (e !== null) {
     // prevents scroll to top of the page when clicking close button
@@ -364,13 +385,25 @@ function hidePopUp(e = null) {
 
 function showPopUp(appendedPopup) {
   if (appendedPopup) {
+    // line that shows current popup
     document.querySelector(".popup").classList.add("popup_opened");
-    let opaqueDiv = document.createElement("div");
-    opaqueDiv.classList.add("page__opaque-layout");
     const formContainer = page.querySelector(".popup");
     enableValidation(formContainer);
-    opaqueDiv.addEventListener("click", () => hidePopUp());
+    let opaqueDiv = document.createElement("div");
+
+    // line that shows bckg
+    opaqueDiv.classList.add("page__opaque-layout_active");
+
     page.insertAdjacentElement("afterbegin", opaqueDiv);
+    opaqueDiv.classList.add("page__opaque-layout-in");
+
+    // retrieve any key pressed and handle its behavior
+    document.addEventListener("keypress", (e) => {
+      handleKeyPressedWhilePopOpen(e);
+    });
+
+    // enables exiting form by clicking outside of it
+    opaqueDiv.addEventListener("click", () => hidePopUp());
   }
   isPopupActive = true;
 }
