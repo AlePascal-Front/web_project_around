@@ -171,7 +171,6 @@ function createPopup(template, id) {
 
   Array.from(template.querySelectorAll(".popup__input")).forEach(
     (input, indx) => {
-      console.log(indx);
       input.placeholder = popupElements[id][`input_${indx + 1}`].placeholder;
       input.name = popupElements[id][`input_${indx + 1}`].name;
       input.id = popupElements[id][`input_${indx + 1}`].id;
@@ -288,8 +287,6 @@ function renderPopUp(id) {
 
   let appended = popup.appendChild(template);
 
-  console.log(typeof appended, appended);
-
   Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
     input.addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
@@ -352,7 +349,6 @@ function setCardsLikeButtonsEvent(renderingType) {
 }
 
 function handleKeyPressedWhilePopOpen(e) {
-  console.log("EventHandler triggered.");
   if (e.key === "Escape") {
     hidePopUp();
   }
@@ -433,8 +429,6 @@ function enableValidation(formContainer) {
       if (fI instanceof HTMLInputElement) {
         fI.addEventListener("input", () => {
           const spanElement = fieldset.nextElementSibling;
-          console.log(spanElement);
-          console.log(fI.validity);
           const errorMessage = fI.validationMessage;
 
           if (!fI.validity.valid) {
