@@ -13,37 +13,37 @@ const popup = content.querySelector(".popup");
 const cards = [
   {
     name: "Acapulco",
-    link: "../images/acapulco600w,450h.jpg",
+    link: "images/acapulco600w,450h.jpg",
     alt: "picture of Acapulco",
     origin: "initial",
   },
   {
     name: "Chichen Itza",
-    link: "../images/chichen-itza600w,400h.jpg",
+    link: "images/chichen-itza600w,400h.jpg",
     alt: "picture of Chichen Itza",
     origin: "initial",
   },
   {
     name: "Edinburgh",
-    link: "../images/edimburgo600w,400h.jpg",
+    link: "images/edimburgo600w,400h.jpg",
     alt: "picture of Edinburgh",
     origin: "initial",
   },
   {
     name: "Louvre",
-    link: "../images/louvre-museum600w,400h.jpg",
+    link: "images/louvre-museum600w,400h.jpg",
     alt: "picture of Louvre",
     origin: "initial",
   },
   {
     name: "Shanghai",
-    link: "../images/shangai600w,400h.jpg",
+    link: "images/shangai600w,400h.jpg",
     alt: "picture of Shangai",
     origin: "initial",
   },
   {
     name: "Tokyo",
-    link: "../images/tokyo600w,399h.jpg",
+    link: "images/tokyo600w,399h.jpg",
     alt: "picture of Tokyo",
     origin: "initial",
   },
@@ -52,7 +52,7 @@ const cards = [
 const popupElements = {
   "edit-profile": {
     title: "Editar perfil",
-    closeButton: "../images/Close Icon.png",
+    closeButton: "images/Close Icon.png",
     hasValidation: false,
     input_1: {
       placeholder: "Nombre",
@@ -75,7 +75,7 @@ const popupElements = {
     title: "Añadir tarjeta",
     placeholder1: "Título",
     placeholder2: "Enlace",
-    closeButton: "../images/Close Icon.png",
+    closeButton: "images/Close Icon.png",
     nameAndId1: "userTitle",
     nameAndId2: "userLink",
     hasValidation: false,
