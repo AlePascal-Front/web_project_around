@@ -36,6 +36,10 @@
   background-color: #000;
 }
 
+.page__opaque-layout_active:hover {
+  cursor: pointer
+}
+
 /* animation when bckg shows */
 .page__opaque-layout-in {
   animation-name: gradual-in;
