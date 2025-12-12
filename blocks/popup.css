@@ -56,8 +56,14 @@
   height: 0;
 }
 
-.popup__error-msg {
-  color: red;
+.popup__span {
+  width: auto;
+  height: auto;
+  font-size: 1em;
+}
+
+.popup__span_error-msg {
+  color: red !important;
   padding: 0;
   margin: 0;
 }

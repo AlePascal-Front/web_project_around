@@ -242,7 +242,10 @@ function setVisualizeImages(
   imageOrigin
 ) {
   let opaqueDiv = document.createElement("div");
-  opaqueDiv.classList.add("page__opaque-layout");
+  opaqueDiv.classList.add(
+    "page__opaque-layout_active",
+    "page__opaque-layout-in"
+  );
   page.insertAdjacentElement("afterbegin", opaqueDiv);
   const template = getTemplate("visualize-img-template");
   const image = template.querySelector(".visualize-img__image");
@@ -269,10 +272,11 @@ function setVisualizeImages(
       : paragraphImageName.textContent;
   imageContainer.append(template);
   closeIcon.addEventListener("click", (e) => {
+    // removes visualize img container
     const parent = e.target.closest(".visualize-img");
     parent.classList.remove("visualize-img_opened");
-    opaqueDiv.classList.remove("page__opaque-layout");
     parent.children[0].remove();
+    hidePopUp();
   });
 }
 
@@ -308,13 +312,13 @@ function renderPopUp(id) {
   showPopUp(appended);
 }
 
-function showWarning(inputElement, spanElement, warningTxt) {
-  inputElement.classList.add("popup__error-msg");
+function showWarning(spanElement, warningTxt) {
+  spanElement.classList.add("popup__span_error-msg");
   spanElement.textContent = warningTxt;
 }
 
-function hideWarning(inputElement, spanElement) {
-  inputElement.classList.remove("popup__error-msg");
+function hideWarning(spanElement) {
+  spanElement.classList.remove("popup__error-msg");
   spanElement.textContent = "";
 }
 
@@ -419,24 +423,17 @@ function enableValidation(formContainer) {
   }
 
   const popupKey = formContainer.querySelector(".popup__container").id;
-  const popupFieldsets = Array.from(
-    formContainer.querySelectorAll(".popup__set")
-  );
+  const form = document.getElementById(popupKey);
+  const formInputs = Array.from(form.elements);
 
-  popupFieldsets.forEach((fieldset) => {
-    const fieldInputs = Array.from(fieldset.children);
-    fieldInputs.forEach((fI) => {
-      if (fI instanceof HTMLInputElement) {
-        fI.addEventListener("input", () => {
-          const spanElement = fieldset.nextElementSibling;
-          const errorMessage = fI.validationMessage;
-
-          if (!fI.validity.valid) {
-            showWarning(fI, spanElement, errorMessage);
-          } else {
-            hideWarning(fI, spanElement);
-          }
-        });
+  formInputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      const spanElement = input.nextElementSibling;
+      const errorMessage = input.validationMessage;
+      if (!input.validity.valid) {
+        showWarning(spanElement, errorMessage);
+      } else {
+        hideWarning(spanElement);
       }
     });
   });
