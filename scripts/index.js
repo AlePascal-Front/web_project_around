@@ -271,11 +271,17 @@ function setVisualizeImages(
       ? cards[cardIndex].name
       : paragraphImageName.textContent;
   imageContainer.append(template);
+
+  document.addEventListener("keydown", (e) => {
+    imageContainer.classList.remove("visualize-img_opened");
+    imageContainer.children[0].remove();
+    handleKeyPressedWhilePopOpen(e);
+  });
+
   closeIcon.addEventListener("click", (e) => {
     // removes visualize img container
-    const parent = e.target.closest(".visualize-img");
-    parent.classList.remove("visualize-img_opened");
-    parent.children[0].remove();
+    imageContainer.classList.remove("visualize-img_opened");
+    imageContainer.children[0].remove();
     hidePopUp();
   });
 }
@@ -290,11 +296,14 @@ function renderPopUp(id) {
   if (!isPopupActive) createPopup(template, id);
 
   let appended = popup.appendChild(template);
+  let form = document.getElementById(id);
 
   Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
     input.addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
         e.preventDefault();
+        userInfo = getUserInput(form);
+        console.log(userInfo);
         handleSubmit(e);
       }
     });
@@ -302,6 +311,8 @@ function renderPopUp(id) {
 
   popup.querySelector(".popup__container").addEventListener("submit", (e) => {
     e.preventDefault();
+    userInfo = getUserInput(form);
+    console.log(userInfo);
     handleSubmit(e);
   });
 
@@ -327,11 +338,15 @@ function updateUserProfile(inputArr) {
   profile.querySelector(".profile__description").textContent = inputArr[1];
 }
 
-function getUserInput(inputs) {
-  let firstUserInput = inputs[0].value;
-  let secondUserInput = inputs[1].value;
-
-  return [firstUserInput, secondUserInput];
+function getUserInput(form) {
+  let inputs = Array.from(form.elements);
+  let userInput = [];
+  inputs.forEach((input) => {
+    if(input instanceof HTMLInputElement && input.type !== "submit") {
+      userInput.push(input.value);
+    }
+  });
+  return userInput;
 }
 
 function setCardsLikeButtonsEvent(renderingType) {
