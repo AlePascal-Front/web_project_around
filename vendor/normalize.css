@@ -24,6 +24,15 @@ body {
   margin: 0;
 }
 
+html {
+  min-height: 100%;
+  background-color: #000;
+}
+
+body {
+  min-height: 100%;
+}
+
 /**
  * Renderiza, de forma consistente, el elemento `<main>` en IE.
  */
