@@ -26,7 +26,7 @@
 }
 
 .profile__name {
-  font-size: 2.625rem;
+  font-size: clamp(2rem, 3rem, 2.625rem);
   font-weight: 500;
   margin: 0;
 }
@@ -59,6 +59,7 @@
 
 .profile__add-button {
   width: 15%;
+  max-width: 15%;
   height: 50px;
   border: 2px solid #fff;
   background-color: transparent;
@@ -112,6 +113,14 @@
     height: 10px;
     color: #fff;
   }
+
+  .profile__add-button {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+    min-width: 100%;
+  }
+
 }
 
 @media screen and (min-width: 431px) and (max-width: 642px) {
@@ -134,5 +143,6 @@
     margin: 0;
     margin-top: 20px;
     width: 100%;
+    min-width: 100%;
   }
 }

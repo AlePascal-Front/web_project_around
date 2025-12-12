@@ -10,3 +10,9 @@
     width: 100%;
   }
 }
+
+@media screen and (min-width: 431px) and (max-width: 642px) {
+  .footer {
+    transform: translateY(150px);
+  }
+}

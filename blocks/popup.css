@@ -3,11 +3,11 @@
 }
 
 .popup_opened, .popup__container {
-  z-index: 9999;
+  z-index: 9998;
   position: fixed;
+  display: flex;
   top: 22%;
   left: calc(50% - 215px);
-  display: flex;
   flex-direction: column;
   margin: auto 0;
   width: 430px;
@@ -21,15 +21,15 @@
 
 .popup__close-button {
   background-color: transparent;
+  z-index: 9999;
   width: auto;
   height: auto;
   border: none;
   font-size: 2.5rem;
   font-weight: 500;
-  color: #fff;
-  position: fixed;
-  top: 16.5%;
-  left: 64%;
+  position: absolute;
+  top: -50px;
+  right: -50px;
 }
 
 .popup__title {
@@ -63,7 +63,7 @@
 }
 
 .popup__span_error-msg {
-  color: red !important;
+  color: red;
   padding: 0;
   margin: 0;
 }
