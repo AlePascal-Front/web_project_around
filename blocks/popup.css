@@ -73,12 +73,23 @@
   height: 20%;
   background-color: #000;
   border: 1px solid #c4c4c4;
+  border-radius: 2px;
   color: #fff;
 }
 
-.popup__button:hover {
+.popup__button_disabled {
+  color: #000;
+  opacity: 0.20;
+  background-color: #fff;
+}
+
+.popup__button_hover:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.popup__button_disabled:hover {
+  cursor: not-allowed;
 }
 
 .popup__close-button:hover {
