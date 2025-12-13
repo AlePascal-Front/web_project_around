@@ -274,14 +274,14 @@ function setVisualizeImages(
 
   document.addEventListener("keydown", (e) => {
     imageContainer.classList.remove("visualize-img_opened");
-    imageContainer.replaceChildren();
+    imageContainer.children[0].remove();
     handleKeyPressedWhilePopOpen(e);
   });
 
-  closeIcon.addEventListener("click", () => {
+  closeIcon.addEventListener("click", (e) => {
     // removes visualize img container
     imageContainer.classList.remove("visualize-img_opened");
-    imageContainer.replaceChildren();
+    imageContainer.children[0].remove();
     hidePopUp();
   });
 }
@@ -303,6 +303,7 @@ function renderPopUp(id) {
       if (e.code === "Enter") {
         e.preventDefault();
         userInfo = getUserInput(form);
+        console.log(userInfo);
         handleSubmit(e);
       }
     });
@@ -311,6 +312,7 @@ function renderPopUp(id) {
   popup.querySelector(".popup__container").addEventListener("submit", (e) => {
     e.preventDefault();
     userInfo = getUserInput(form);
+    console.log(userInfo);
     handleSubmit(e);
   });
 
@@ -340,7 +342,7 @@ function getUserInput(form) {
   let inputs = Array.from(form.elements);
   let userInput = [];
   inputs.forEach((input) => {
-    if (input instanceof HTMLInputElement && input.type !== "submit") {
+    if(input instanceof HTMLInputElement && input.type !== "submit") {
       userInput.push(input.value);
     }
   });
@@ -382,10 +384,9 @@ function hidePopUp(e = null) {
   popup.classList.remove("popup_opened");
 
   /* delay to let animation play */
+  /* after its finished played, remove bckg */
   setTimeout(() => {
-    if (page.querySelector(".page__opaque-layout_active") !== null) {
-      page.querySelector(".page__opaque-layout_active").remove();
-    }
+    page.querySelector(".page__opaque-layout_active").remove();
   }, 800); // 800ms = 0.8s
   isPopupActive = false;
 
@@ -439,7 +440,6 @@ function enableValidation(formContainer) {
   const popupKey = formContainer.querySelector(".popup__container").id;
   const form = document.getElementById(popupKey);
   const formInputs = Array.from(form.elements);
-  const submitBttn = formContainer.querySelector(".popup__button");
 
   formInputs.forEach((input) => {
     input.addEventListener("input", () => {
@@ -447,15 +447,8 @@ function enableValidation(formContainer) {
       const errorMessage = input.validationMessage;
       if (!input.validity.valid) {
         showWarning(spanElement, errorMessage);
-        // line that removes main styling to quit hover effect
-        submitBttn.classList.remove("popup__button_hover");
-        submitBttn.classList.add("popup__button_disabled");
-        submitBttn.disabled = true;
       } else {
         hideWarning(spanElement);
-        submitBttn.classList.add("popup__button_hover");
-        submitBttn.classList.remove("popup__button_disabled");
-        submitBttn.disabled = false;
       }
     });
   });
