@@ -53,7 +53,6 @@ const popupElements = {
   "edit-profile": {
     title: "Editar perfil",
     closeButton: "images/Close Icon.png",
-    hasValidation: false,
     input_1: {
       placeholder: "Nombre",
       name: "userName",
@@ -78,7 +77,6 @@ const popupElements = {
     closeButton: "images/Close Icon.png",
     nameAndId1: "userTitle",
     nameAndId2: "userLink",
-    hasValidation: false,
     input_1: {
       placeholder: "Título",
       name: "userTitle",
@@ -242,10 +240,7 @@ function setVisualizeImages(
   imageOrigin
 ) {
   let opaqueDiv = document.createElement("div");
-  opaqueDiv.classList.add(
-    "page__opaque-layout_active",
-    "page__opaque-layout-in"
-  );
+  opaqueDiv.classList.add("page__opaque-layout_active");
   page.insertAdjacentElement("afterbegin", opaqueDiv);
   const template = getTemplate("visualize-img-template");
   const image = template.querySelector(".visualize-img__image");
@@ -342,7 +337,7 @@ function getUserInput(form) {
   let inputs = Array.from(form.elements);
   let userInput = [];
   inputs.forEach((input) => {
-    if(input instanceof HTMLInputElement && input.type !== "submit") {
+    if (input instanceof HTMLInputElement && input.type !== "submit") {
       userInput.push(input.value);
     }
   });
@@ -374,22 +369,11 @@ function handleKeyPressedWhilePopOpen(e) {
 }
 
 function hidePopUp(e = null) {
-  let opaqueDivClasses = page.querySelector(
-    ".page__opaque-layout_active"
-  ).classList;
-
-  /* add closing animation */
-  opaqueDivClasses.add("page__opaque-layout-out");
-
   popup.classList.remove("popup_opened");
-
-  /* delay to let animation play */
-  /* after its finished played, remove bckg */
-  setTimeout(() => {
-    page.querySelector(".page__opaque-layout_active").remove();
-  }, 800); // 800ms = 0.8s
+  const opaqueLayout = page.querySelector(".page__opaque-layout");
+  opaqueLayout.classList.remove("page__opaque-layout_active");
   isPopupActive = false;
-
+  popup.replaceChildren();
   document.removeEventListener("keydown", handleKeyPressedWhilePopOpen);
 
   if (e !== null) {
@@ -404,13 +388,8 @@ function showPopUp(appendedPopup) {
     document.querySelector(".popup").classList.add("popup_opened");
     const formContainer = page.querySelector(".popup");
     enableValidation(formContainer);
-    let opaqueDiv = document.createElement("div");
-
-    // line that shows bckg
+    const opaqueDiv = document.querySelector(".page__opaque-layout");
     opaqueDiv.classList.add("page__opaque-layout_active");
-
-    page.insertAdjacentElement("afterbegin", opaqueDiv);
-    opaqueDiv.classList.add("page__opaque-layout-in");
 
     // retrieve any key pressed and handle its behavior
     document.addEventListener("keydown", (e) => {
@@ -423,24 +402,13 @@ function showPopUp(appendedPopup) {
   isPopupActive = true;
 }
 
-function areAllValidated(popupElems) {
-  for (const key in popupElems) {
-    if (!popupElems[key].hasValidation) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function enableValidation(formContainer) {
-  if (areAllValidated(popupElements)) {
-    return;
-  }
-
   const popupKey = formContainer.querySelector(".popup__container").id;
   const form = document.getElementById(popupKey);
   const formInputs = Array.from(form.elements);
+  const formBttn = document.getElementById("submit-button");
 
+  // both of them have to be valid in order to enable button
   formInputs.forEach((input) => {
     input.addEventListener("input", () => {
       const spanElement = input.nextElementSibling;
@@ -450,9 +418,19 @@ function enableValidation(formContainer) {
       } else {
         hideWarning(spanElement);
       }
+
+      const areAllValid = formInputs.every((inpt) => inpt.validity.valid);
+      if (areAllValid) {
+        formBttn.classList.remove("popup__button_disabled");
+        formBttn.classList.add("popup__button", "popup__button_hover");
+        formBttn.disabled = false;
+      } else {
+        formBttn.classList.remove("popup__button", "popup__button_hover");
+        formBttn.classList.add("popup__button_disabled");
+        formBttn.disabled = true;
+      }
     });
   });
-  popupElements[popupKey].hasValidation = true;
 }
 
 function handlePopup() {
@@ -490,7 +468,6 @@ if (cardImages !== undefined) {
     cardImage.addEventListener("click", (e) => {
       const cardIndx = cardImages.indexOf(e.currentTarget);
       if (cardIndx !== -1) setVisualizeImages(cardIndx);
-      else console.error("ERROR: Something went wrong");
     });
   });
 }
