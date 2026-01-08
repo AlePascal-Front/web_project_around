@@ -239,9 +239,8 @@ function setVisualizeImages(
   imageTitle = null,
   imageOrigin
 ) {
-  let opaqueDiv = document.createElement("div");
-  opaqueDiv.classList.add("page__opaque-layout_active");
-  page.insertAdjacentElement("afterbegin", opaqueDiv);
+  const opaqueLayout = page.querySelector(".page__opaque-layout");
+  opaqueLayout.classList.add("page__opaque-layout_active");
   const template = getTemplate("visualize-img-template");
   const image = template.querySelector(".visualize-img__image");
   const imageContainer = document.querySelector(".visualize-img");
@@ -278,6 +277,33 @@ function setVisualizeImages(
     imageContainer.classList.remove("visualize-img_opened");
     imageContainer.children[0].remove();
     hidePopUp();
+  });
+
+  const visualizeImageContainer = page.querySelector(".visualize-img_opened");
+  visualizeImageContainer.addEventListener("click", (e) => {
+    const targetClasses = e.target.classList;
+    const hasEitherClass =
+      targetClasses.contains("visualize-img__container") ||
+      targetClasses.contains("visualize-img_opened");
+    if (hasEitherClass) {
+      imageContainer.classList.remove("visualize-img_opened");
+      if (imageContainer.children.length !== 0) {
+        imageContainer.children[0].remove();
+      }
+      hidePopUp();
+    }
+  });
+
+  opaqueLayout.addEventListener("click", (e) => {
+    const targetClasses = e.target.classList;
+    const hasClass = targetClasses.contains("page__opaque-layout_active");
+    if (hasClass) {
+      imageContainer.classList.remove("visualize-img_opened");
+      if (imageContainer.children.length !== 0) {
+        imageContainer.children[0].remove();
+      }
+      hidePopUp();
+    }
   });
 }
 

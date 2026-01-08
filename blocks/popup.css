@@ -7,7 +7,7 @@
 .popup_opened, .popup__container {
   opacity: 1;
   visibility: visible;
-  z-index: 9998;
+  z-index: 1003;
   position: fixed;
   display: flex;
   top: 22%;
@@ -24,7 +24,7 @@
 
 .popup__close-button {
   background-color: transparent;
-  z-index: 9999;
+  z-index: 1004;
   width: auto;
   height: auto;
   border: none;
