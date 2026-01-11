@@ -1,14 +1,14 @@
 const page = document.querySelector(".page");
-const header = page.querySelector(".header");
 const profile = page.querySelector(".profile");
 const content = page.querySelector(".content");
-const footer = page.querySelector(".footer");
 
 const editBttn = content.querySelector(".profile__edit-button");
 const editSvg = content.querySelector(".profile__edit-button-svg");
 const addBttn = content.querySelector(".profile__add-button");
 
 const popup = content.querySelector(".popup");
+const opaqueLayout = page.querySelector(".page__opaque-layout");
+const imageContainer = page.querySelector(".visualize-img");
 
 const cards = [
   {
@@ -104,28 +104,28 @@ let cardImages;
 /**
  * @returns {DocumentFragment}
  */
-function getTemplate(id) {
+function getTemplateContent(id) {
   return document.getElementById(id).content.cloneNode(true);
 }
 
-function createCard(template, cardData) {
-  template.querySelector(".card__title").textContent = cardData.name;
-  const imageElem = template.querySelector(".card__image");
+function createCard(cardTemplateContent, cardData) {
+  cardTemplateContent.querySelector(".card__title").textContent = cardData.name;
+  const imageElem = cardTemplateContent.querySelector(".card__image");
   imageElem.srcset = `${cardData.link}`;
   imageElem.alt = `${cardData.alt}`;
 }
 
-function createUserCard(temp = null, cardD) {
-  temp = getTemplate("card-template");
-  const cardTitle = cardD[0];
-  const cardLink = cardD[1];
+function createUserCard(cardTempContent = null, cardData) {
+  cardTempContent = getTemplateContent("card-template");
+  const cardTitle = cardData[0];
+  const cardLink = cardData[1];
   const imageAlt = "user card";
   const origin = "user";
 
-  temp.querySelector(".card__title").textContent = cardTitle;
-  temp.querySelector(".card__image").src = cardLink;
-  temp.querySelector(".card__image").alt = imageAlt;
-  let cardContainer = document.querySelector(".cards__grid");
+  cardTempContent.querySelector(".card__title").textContent = cardTitle;
+  cardTempContent.querySelector(".card__image").src = cardLink;
+  cardTempContent.querySelector(".card__image").alt = imageAlt;
+  let cardContainer = content.querySelector(".cards__grid");
 
   cards.push({
     name: cardTitle,
@@ -151,6 +151,21 @@ function createUserCard(temp = null, cardD) {
     .addEventListener("click", (e) => {
       const cardToRemove = e.target.closest(".card");
       deleteCard(cardToRemove);
+
+      if (cardContainer.children.length > 0) return;
+      else if (cardContainer.children.length === 0) {
+        // render no cards layout
+        const noCardsTemplateContent = getTemplateContent(
+          "no-cards-icon-template"
+        );
+        const svg = noCardsTemplateContent.firstElementChild;
+        const noCardsParagraph = noCardsTemplateContent.querySelector(
+          ".cards__no-cards-msg"
+        );
+        cardContainer.classList.add("cards__flex");
+        cardContainer.append(svg);
+        cardContainer.append(noCardsParagraph);
+      }
     });
 
   cardContainer.querySelector(".card__image").addEventListener("click", (e) => {
@@ -161,47 +176,47 @@ function createUserCard(temp = null, cardD) {
   setCardsLikeButtonsEvent("User Card");
 }
 
-function createPopup(template, id) {
-  template.querySelector(".popup__close-icon").src =
+function createPopup(popupTemplateContent, id) {
+  popupTemplateContent.querySelector(".popup__close-icon").src =
     popupElements[id].closeButton;
-  template.querySelector(".popup__title").textContent = popupElements[id].title;
-  template.querySelector(".popup__container").id = id;
-
-  Array.from(template.querySelectorAll(".popup__input")).forEach(
-    (input, indx) => {
-      input.placeholder = popupElements[id][`input_${indx + 1}`].placeholder;
-      input.name = popupElements[id][`input_${indx + 1}`].name;
-      input.id = popupElements[id][`input_${indx + 1}`].id;
-      input.type = popupElements[id][`input_${indx + 1}`].inputType;
-
-      let lengthRang = popupElements[id][`input_${indx + 1}`].lengthRange;
-      if (lengthRang != null) {
-        input.setAttribute("minlength", lengthRang[0]);
-        input.setAttribute("maxlength", lengthRang[1]);
-      }
-
-      let required = popupElements[id][`input_${indx + 1}`].isRequired;
-      if (required) {
-        input.setAttribute("required", "");
-      }
-    }
+  popupTemplateContent.querySelector(".popup__title").textContent =
+    popupElements[id].title;
+  popupTemplateContent.querySelector(".popup__container").id = id;
+  const inputs = Array.from(
+    popupTemplateContent.querySelectorAll(".popup__input")
   );
+
+  inputs.forEach((input, indx) => {
+    input.placeholder = popupElements[id][`input_${indx + 1}`].placeholder;
+    input.name = popupElements[id][`input_${indx + 1}`].name;
+    input.id = popupElements[id][`input_${indx + 1}`].id;
+    input.type = popupElements[id][`input_${indx + 1}`].inputType;
+
+    let lengthRang = popupElements[id][`input_${indx + 1}`].lengthRange;
+    if (lengthRang != null) {
+      input.setAttribute("minlength", lengthRang[0]);
+      input.setAttribute("maxlength", lengthRang[1]);
+    }
+
+    let required = popupElements[id][`input_${indx + 1}`].isRequired;
+    if (required) {
+      input.setAttribute("required", "");
+    }
+  });
 }
 
 function renderInitialCards() {
   let cardContainer = document.querySelector(".cards__grid");
   cards.forEach((card) => {
-    let template = getTemplate("card-template");
-    createCard(template, card);
-    cardContainer.append(template);
+    let cardtemplateContent = getTemplateContent("card-template");
+    createCard(cardtemplateContent, card);
+    cardContainer.append(cardtemplateContent);
   });
-  if (deleteButtons === undefined)
-    deleteButtons = Array.from(
-      document.querySelectorAll(".card__delete-button-svg")
-    );
+  deleteButtons = Array.from(
+    document.querySelectorAll(".card__delete-button-svg")
+  );
 
-  if (cardImages === undefined)
-    cardImages = Array.from(document.querySelectorAll(".card__image"));
+  cardImages = Array.from(document.querySelectorAll(".card__image"));
 
   deleteButtons.forEach((bttn) => {
     bttn.addEventListener("click", (e) => {
@@ -209,24 +224,25 @@ function renderInitialCards() {
 
       if (cardContainer.children.length > 0) return;
       else if (cardContainer.children.length === 0) {
-        const noCardsParagraph = document.createElement("p");
-        const svgCode = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-</svg>
-`;
-        const svgContainer = document.createElement("div");
-        const svg = document.createElement("svg");
-        svg.innerHTML = svgCode;
+        //const noCardsParagraph = document.createElement("p");
+        //const svgContainer = document.createElement("div");
+        const noCardsTemplateContent = getTemplateContent(
+          "no-cards-icon-template"
+        );
+        const svg = noCardsTemplateContent.firstElementChild;
+        const noCardsParagraph = noCardsTemplateContent.querySelector(
+          ".cards__no-cards-msg"
+        );
         cardContainer.classList.add("cards__flex");
-        svgContainer.insertAdjacentHTML("afterbegin", svgCode);
-
-        noCardsParagraph.classList.add("cards__no-cards-msg");
-        noCardsParagraph.textContent =
+        svg.classList.add("cards__no-cards-svg");
+        //svgContainer.insertAdjacentHTML("afterbegin", svgCode);
+        /*noCardsParagraph.textContent =
           'Sin lugares que mostrar. ¡Haz clic en el botón "+" para añadir!';
-        svg.firstChild.classList.add("cards__no-cards-svg");
+        svg.firstChild.classList.add("cards__no-cards-svg");*/
 
         cardContainer.append(svg);
         cardContainer.append(noCardsParagraph);
+        //cardContainer.append(noCardsParagraph);
       }
     });
   });
@@ -239,13 +255,19 @@ function setVisualizeImages(
   imageTitle = null,
   imageOrigin
 ) {
-  const opaqueLayout = page.querySelector(".page__opaque-layout");
   opaqueLayout.classList.add("page__opaque-layout_active");
-  const template = getTemplate("visualize-img-template");
-  const image = template.querySelector(".visualize-img__image");
-  const imageContainer = document.querySelector(".visualize-img");
-  const paragraphImageName = template.querySelector(".visualize-img__img-name");
-  const closeIcon = template.querySelector(".visualize-img__close-icon");
+  const visualizeImagetemplateContent = getTemplateContent(
+    "visualize-img-template"
+  );
+  const image = visualizeImagetemplateContent.querySelector(
+    ".visualize-img__image"
+  );
+  const paragraphImageName = visualizeImagetemplateContent.querySelector(
+    ".visualize-img__img-name"
+  );
+  const closeIcon = visualizeImagetemplateContent.querySelector(
+    ".visualize-img__close-icon"
+  );
 
   if (
     cardIndex === null &&
@@ -264,7 +286,7 @@ function setVisualizeImages(
     paragraphImageName.textContent === ""
       ? cards[cardIndex].name
       : paragraphImageName.textContent;
-  imageContainer.append(template);
+  imageContainer.append(visualizeImagetemplateContent);
 
   document.addEventListener("keydown", (e) => {
     imageContainer.classList.remove("visualize-img_opened");
@@ -280,68 +302,73 @@ function setVisualizeImages(
   });
 
   const visualizeImageContainer = page.querySelector(".visualize-img_opened");
-  visualizeImageContainer.addEventListener("click", (e) => {
-    const targetClasses = e.target.classList;
-    const hasEitherClass =
-      targetClasses.contains("visualize-img__container") ||
-      targetClasses.contains("visualize-img_opened");
-    if (hasEitherClass) {
-      imageContainer.classList.remove("visualize-img_opened");
-      if (imageContainer.children.length !== 0) {
-        imageContainer.children[0].remove();
-      }
-      hidePopUp();
-    }
-  });
+  visualizeImageContainer.addEventListener(
+    "click",
+    visualizeImageContainerClickHandler
+  );
 
-  opaqueLayout.addEventListener("click", (e) => {
-    const targetClasses = e.target.classList;
-    const hasClass = targetClasses.contains("page__opaque-layout_active");
-    if (hasClass) {
-      imageContainer.classList.remove("visualize-img_opened");
-      if (imageContainer.children.length !== 0) {
-        imageContainer.children[0].remove();
-      }
-      hidePopUp();
-    }
-  });
+  opaqueLayout.addEventListener("click", opaqueLayoutClickHandler);
 }
 
-function deleteCard(card) {
-  card.remove();
+function visualizeImageContainerClickHandler(e) {
+  const targetClasses = e.target.classList;
+  const hasEitherClass =
+    targetClasses.contains("visualize-img__container") ||
+    targetClasses.contains("visualize-img_opened");
+  if (hasEitherClass) {
+    imageContainer.classList.remove("visualize-img_opened");
+    if (imageContainer.children.length !== 0) {
+      imageContainer.children[0].remove();
+    }
+    hidePopUp();
+  }
+}
+
+function opaqueLayoutClickHandler(e) {
+  const targetClasses = e.target.classList;
+  const hasClass = targetClasses.contains("page__opaque-layout_active");
+  if (hasClass) {
+    imageContainer.classList.remove("visualize-img_opened");
+    if (imageContainer.children.length !== 0) {
+      imageContainer.children[0].remove();
+    }
+    hidePopUp();
+  }
 }
 
 function renderPopUp(id) {
-  const template = getTemplate("popup-template");
+  const popupTemplateContent = getTemplateContent("popup-template");
 
-  if (!isPopupActive) createPopup(template, id);
+  if (!isPopupActive) createPopup(popupTemplateContent, id);
 
-  let appended = popup.appendChild(template);
+  let appended = popup.appendChild(popupTemplateContent);
   let form = document.getElementById(id);
+  const popupInputs = Array.from(popup.querySelectorAll(".popup__input"));
 
-  Array.from(popup.querySelectorAll(".popup__input")).forEach((input) => {
+  popupInputs.forEach((input) => {
     input.addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
         e.preventDefault();
         userInfo = getUserInput(form);
-        console.log(userInfo);
         handleSubmit(e);
       }
     });
   });
 
-  popup.querySelector(".popup__container").addEventListener("submit", (e) => {
+  const popupContainer = popup.querySelector(".popup__container");
+  popupContainer.addEventListener("submit", (e) => {
     e.preventDefault();
     userInfo = getUserInput(form);
-    console.log(userInfo);
     handleSubmit(e);
   });
 
-  popup
-    .querySelector(".popup__close-button")
-    .addEventListener("click", hidePopUp);
-
+  const popupCloseButton = popup.querySelector(".popup__close-button");
+  popupCloseButton.addEventListener("click", hidePopUp);
   showPopUp(appended);
+}
+
+function deleteCard(card) {
+  card.remove();
 }
 
 function showWarning(spanElement, warningTxt) {
@@ -396,11 +423,15 @@ function handleKeyPressedWhilePopOpen(e) {
 
 function hidePopUp(e = null) {
   popup.classList.remove("popup_opened");
-  const opaqueLayout = page.querySelector(".page__opaque-layout");
   opaqueLayout.classList.remove("page__opaque-layout_active");
   isPopupActive = false;
   popup.replaceChildren();
   document.removeEventListener("keydown", handleKeyPressedWhilePopOpen);
+  opaqueLayout.removeEventListener("click", opaqueLayoutClickHandler);
+  imageContainer.removeEventListener(
+    "click",
+    visualizeImageContainerClickHandler
+  );
 
   if (e !== null) {
     // prevents scroll to top of the page when clicking close button
@@ -411,11 +442,10 @@ function hidePopUp(e = null) {
 function showPopUp(appendedPopup) {
   if (appendedPopup) {
     // line that shows current popup
-    document.querySelector(".popup").classList.add("popup_opened");
+    popup.classList.add("popup_opened");
     const formContainer = page.querySelector(".popup");
     enableValidation(formContainer);
-    const opaqueDiv = document.querySelector(".page__opaque-layout");
-    opaqueDiv.classList.add("page__opaque-layout_active");
+    opaqueLayout.classList.add("page__opaque-layout_active");
 
     // retrieve any key pressed and handle its behavior
     document.addEventListener("keydown", (e) => {
@@ -423,7 +453,7 @@ function showPopUp(appendedPopup) {
     });
 
     // enables exiting form by clicking outside of it
-    opaqueDiv.addEventListener("click", () => hidePopUp());
+    opaqueLayout.addEventListener("click", () => hidePopUp());
   }
   isPopupActive = true;
 }
@@ -478,7 +508,6 @@ function handleSubmit(e) {
 
 let warningMsg;
 let userInfo;
-let emptyFields;
 
 renderInitialCards();
 editBttn.addEventListener("click", (e) => {
