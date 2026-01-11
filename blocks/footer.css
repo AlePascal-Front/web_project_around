@@ -5,14 +5,17 @@
     height: auto;
 }
 
-@media screen and (min-width: 320px) and (max-width: 431px) {
+@media screen and (min-width: 320px) and (max-width: 430px) {
   .footer {
     width: 100%;
   }
 }
 
 @media screen and (min-width: 431px) and (max-width: 642px) {
+  /*.footer {
+    margin-top: 300px;
+  }*/
   .footer {
-    transform: translateY(150px);
+    width: 100%;
   }
 }
