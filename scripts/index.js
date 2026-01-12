@@ -380,7 +380,6 @@ function enableValidation() {
 
 function deleteCard(card) {
   card.remove();
-  console.log(cards);
 }
 
 function showWarning(spanElement, warningTxt) {
