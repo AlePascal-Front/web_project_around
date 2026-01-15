@@ -79,3 +79,11 @@ export const popupData = {
     },
   },
 };
+
+export const validationConfig = {
+  inputSelector: ".popup__input",
+  submitButtonId: "submit-button",
+  inactiveButtonClass: "popup__button_disabled",
+  activeButtonClass: "popup__button",
+  errorClass: "popup__span_error-msg",
+};
