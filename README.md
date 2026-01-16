@@ -12,7 +12,7 @@ Web project from a coding bootcamp with focus on front-end skills build with mod
 
 # Future features 🔮
 
-- [ ] Modal asking for confirmation before attempting to delete a card
+- [ ] Modal asking for confirmation before attempting to delete a card.
 
 # Technologies used :computer:
 
