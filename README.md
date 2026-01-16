@@ -10,6 +10,10 @@ Web project from a coding bootcamp with focus on front-end skills build with mod
 * View it from anywhere. Usage of media queries to obtain optimal viewport on mobile and desktop screens.
 * Modern UI thanks to the usage of modern markup languages and programming languages.
 
+# Future features 🔮
+
+- [ ] Modal asking for confirmation before attempting to delete a card
+
 # Technologies used :computer:
 
 * HTML.
