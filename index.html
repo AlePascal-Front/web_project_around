@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -109,48 +109,55 @@
             </div>
           </div>
         </template>
-        <template id="popup-template">
-          <form action="#" class="popup__container">
-            <button class="popup__close-button" aria-label="Close popup">
-              <img class="popup__close-icon" />
+        <template id="popup-form-template">
+          <form action="#" class="popup__form-container" id="popup-form">
+            <button
+              type="button"
+              class="popup__form-close-button"
+              aria-label="Close popup"
+            >
+              <img class="popup__form-close-icon" />
             </button>
-            <h2 class="popup__title"></h2>
+            <h2 class="popup__form-title"></h2>
             <input
               type="text"
               name=""
               id=""
               placeholder=""
-              class="popup__input"
+              class="popup__form-input"
             />
-            <span class="popup__span"></span>
+            <span class="popup__form-span"></span>
             <input
               type="text"
               name=""
               id=""
               placeholder=""
-              class="popup__input"
+              class="popup__form-input"
             />
-            <span class="popup__span"></span>
+            <span class="popup__form-span"></span>
             <input
               type="submit"
               name="submit"
               id="submit-button"
-              class="popup__button_disabled"
+              class="popup__form-button_disabled"
               value="Guardar"
               disabled
             />
           </form>
         </template>
-        <template id="visualize-img-template">
-          <div class="visualize-img__container">
-            <button class="visualize-img__close-button" aria-label="Close">
+        <template id="popup-visualize-img-template">
+          <div class="popup__visualize-img-container">
+            <button
+              class="popup__visualize-img-close-button"
+              aria-label="Close"
+            >
               <img
                 src="images/Close Icon.png"
-                class="visualize-img__close-icon"
+                class="popup__visualize-img-close-icon"
               />
             </button>
-            <img class="visualize-img__image" />
-            <p class="visualize-img__img-name"></p>
+            <img class="popup__visualize-img-image" />
+            <p class="popup__visualize-img-name"></p>
           </div>
         </template>
         <template id="no-cards-icon-template">
