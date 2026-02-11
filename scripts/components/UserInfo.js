@@ -30,5 +30,5 @@ class UserInfo {
 
 // singleton pattern in ES modules...
 // no need to create multiple instances of UserInfo
-const userInfo = new UserInfo();
+const userInfo = new UserInfo({ userName: null, userJob: null });
 export default userInfo;
