@@ -1,18 +1,15 @@
-import { popupData, cards, validationConfig } from "./data.js";
-import {
-  showPopUp,
-  hidePopUp,
-  mutateUserInputIntoCardObj,
-  removeNoCardsLayout,
-  createPopup,
-} from "./utils.js";
-import { DOM, TEMPLATES } from "./dom.js";
-import { Card } from "./Card.js";
-import { FormValidation } from "./FormValidation.js";
+import { formPopupData, cards, validationConfig } from "./utils/data.js";
+import { fillPopupFormAttributes, removeNoCardsLayout } from "./utils/utils.js";
+import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "./utils/dom.js";
+import Card from "./components/Card.js";
+import FormValidation from "./components/FormValidation.js";
+import Section from "./components/Section.js";
+import PopupWithImage from "./components/PopupWithImage.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import userInfo from "./components/UserInfo.js";
 
 const state = {
   popupId: null,
-  userInfo: null,
   areInitialCardsRendered: false,
 };
 
@@ -22,162 +19,125 @@ const createCard = (cardData) => {
     cards.push(cardData);
   }
 
-  const card = new Card(cardData);
+  const card = new Card(cardData, (e) => {
+    if (e.target.classList.contains("card__image")) {
+      const { popupWithImageTemplateId } = TEMPLATE_IDS;
+      new PopupWithImage(popupWithImageTemplateId, {
+        imageSrc: card.getImageUrl(),
+        imageCaption: card.getTitle(),
+      }).open();
+    }
+  });
   const filledCard = card.fillAndGetTemplate();
   return filledCard;
 };
 
 const renderInitialCards = () => {
-  cards.forEach((cardData) => {
-    DOM.cardsContainer.append(createCard(cardData));
-  });
+  const cardsSection = new Section(
+    {
+      items: cards,
+      renderer: (item) => {
+        const card = new Card(item, () => {
+          const { popupWithImageTemplateId } = TEMPLATE_IDS;
+          new PopupWithImage(popupWithImageTemplateId, {
+            imageSrc: card.getImageUrl(),
+            imageCaption: card.getTitle(),
+          }).open();
+        });
+
+        const renderedCard = card.fillAndGetTemplate();
+        cardsSection.addItem(renderedCard);
+      },
+    },
+    cardsContainerSelector,
+  );
+  cardsSection.renderItems();
   state.areInitialCardsRendered = true;
 };
 
-const exitPopUpOnEsc = (e) => {
-  if (e.key === "Escape") {
-    handleHidePopUpCall();
-  }
-};
-
-const handleHidePopUpCall = (e = null) => {
-  const { popup, layout, imageContainer } = DOM;
-  const handlers = {
-    exitPopUpOnEsc,
-  };
-  hidePopUp(popup, layout, imageContainer, handlers, e);
-};
-
-const handleShowPopUpCall = () => {
-  const handlers = {
-    closeLayoutGlobalHelper,
-    exitPopUpOnEsc,
-  };
-  const { popup, layout } = DOM;
-  showPopUp(handlers, popup, layout);
-};
-
-const renderPopUp = (id) => {
+const renderPopupWithForm = () => {
   /*
   this conditional is here because
   without it you'd end up stacking bunch
   of popups when pressing the "enter" key.
   */
-  if (DOM.popup.children.length > 0) {
+  const { popup } = DOM;
+  if (popup.children.length > 0) {
     return;
   }
 
-  const popupTemplateContent = TEMPLATES.popup.content.cloneNode(true);
+  const { popupId } = state;
+  console.log(popupId)
+  const { popupWithFormTemplateId } = TEMPLATE_IDS;
 
-  createPopup(id, popupTemplateContent, popupData);
-  DOM.popup.append(popupTemplateContent);
-  let form = document.getElementById(id);
+  const popupWithForm = new PopupWithForm(popupWithFormTemplateId, (e) => {
+    e?.preventDefault();
+    if (popupId === "edit-profile") {
+      const [userName, userJob] = popupWithForm._getUserInput();
+      userInfo.setUserName(userName);
+      userInfo.setUserJob(userJob);
+      userInfo.setUserInfo();
+      popupWithForm.close();
+    } else if (popupId === "add-card") {
+      const [title, imageUrl, imageAlt = "user card", origin = "user"] =
+        popupWithForm._getUserInput();
+      const { cardsContainer } = DOM;
 
-  const formInst = new FormValidation(validationConfig, form);
-  formInst.enableValidation();
+      const items = [
+        {
+          name: title,
+          link: imageUrl,
+          alt: imageAlt,
+          origin: origin,
+        },
+      ];
+      const cardsSection = new Section(
+        {
+          items: items,
+          renderer: (item) => {
+            const card = new Card(item, () => {
+              const { popupWithImageTemplateId } = TEMPLATE_IDS;
+              new PopupWithImage(popupWithImageTemplateId, {
+                imageSrc: card.getImageUrl(),
+                imageCaption: card.getTitle(),
+              }).open();
+            });
 
-  let submitBttn = document.getElementById("submit-button");
-  // allows user to 'submit' using enter key
-  form.addEventListener("keypress", (e) => {
-    // prevents the form from submitting when pressing
-    // "enter" key
-    if (e.code === "Enter") e.preventDefault();
+            const renderedCard = card.fillAndGetTemplate();
 
-    if (
-      e.target.classList.contains("popup__input") &&
-      e.target.type !== "submit" &&
-      e.code === "Enter" &&
-      !submitBttn.disabled
-    ) {
-      state.userInfo = getUserInput(form);
-      handleSubmit();
+            // "cards__flex" is a class added when there are no cards
+            if (cardsContainer.classList.contains("cards__flex")) {
+              removeNoCardsLayout(cardsContainer);
+            }
+
+            cardsSection.prependItem(renderedCard);
+          },
+        },
+        cardsContainerSelector,
+      );
+
+      cardsSection.renderItems();
+      popupWithForm.close();
     }
   });
 
-  form.addEventListener("submit", (e) => {
-    state.userInfo = getUserInput(form);
-    handleSubmit(e);
-  });
-
-  const popupCloseButton = DOM.popup.querySelector(".popup__close-button");
-  popupCloseButton.addEventListener("click", (e) => {
-    handleHidePopUpCall(e);
-  });
-  handleShowPopUpCall();
-};
-
-const closeLayoutGlobalHelper = (e) => {
-  const targetClasses = e.target.classList;
-  const hasEitherClass =
-    targetClasses.contains("visualize-img__container") ||
-    targetClasses.contains("page__opaque-layout_active") ||
-    targetClasses.contains("visualize-img_opened");
-
-  if (hasEitherClass) {
-    if (DOM.popup.children.length > 0) {
-      handleHidePopUpCall();
-    } else if (DOM.imageContainer.children.length > 0) {
-      DOM.layout.classList.remove("page__opaque-layout_active");
-      DOM.imageContainer.classList.remove("visualize-img_opened");
-      DOM.imageContainer.replaceChildren();
-    }
-  }
-};
-
-const getUserInput = (form) => {
-  let inputs = Array.from(form.elements);
-  let userInput = [];
-  inputs.forEach((input) => {
-    if (input instanceof HTMLInputElement && input.type !== "submit") {
-      userInput.push(input.value);
-    }
-  });
-
-  if (state.popupId === "add-card") {
-    userInput = mutateUserInputIntoCardObj(userInput);
-  }
-
-  return userInput;
-};
-
-const updateUserProfile = (inputArr) => {
-  const profile = DOM.profile;
-  profile.querySelector(".profile__name").textContent = inputArr[0];
-  profile.querySelector(".profile__description").textContent = inputArr[1];
-};
-
-function handlePopup() {
-  renderPopUp(state.popupId);
-}
-
-const handleSubmit = (e) => {
-  e?.preventDefault();
-  if (state.popupId === "edit-profile") {
-    updateUserProfile(state.userInfo);
-  } else if (state.popupId === "add-card") {
-    const newCard = createCard(state.userInfo);
-    const cardsContainer = DOM.cardsContainer;
-
-    // "cards__flex" is a class added when there are no cards
-    if (cardsContainer.classList.contains("cards__flex")) {
-      removeNoCardsLayout(cardsContainer);
-    }
-
-    cardsContainer.prepend(newCard);
-  }
-  handleHidePopUpCall(e);
+  const popupWithFormTemplateContent = popupWithForm.getPopupTemplateContent();
+  fillPopupFormAttributes(popupId, popupWithFormTemplateContent, formPopupData);
+  const form = popupWithFormTemplateContent.querySelector(
+    ".popup__form-container",
+  );
+  popupWithForm.setEventListeners();
+  const formValInst = new FormValidation(validationConfig, form);
+  formValInst.enableValidation();
+  popupWithForm.open();
 };
 
 renderInitialCards();
 
-document.addEventListener("click", closeLayoutGlobalHelper);
-
-DOM.editBttn.addEventListener("click", (e) => {
-  state.popupId = e.target.closest(".profile__edit-button").id;
-  handlePopup(state.popupId);
-});
-
-DOM.addBttn.addEventListener("click", (e) => {
-  state.popupId = e.target.closest(".profile__add-button").id;
-  handlePopup(state.popupId);
+const { editBttn, addBttn } = DOM;
+[editBttn, addBttn].forEach((bttn) => {
+  bttn.addEventListener("click", (e) => {
+    state.popupId = bttn.closest(`.${bttn.classList[0]}`).id;
+    renderPopupWithForm();
+  });
 });
