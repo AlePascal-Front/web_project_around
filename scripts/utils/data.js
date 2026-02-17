@@ -40,7 +40,6 @@ export const cards = [
 export const formPopupData = {
   "edit-profile": {
     title: "Editar perfil",
-    closeButton: "images/Close Icon.png",
     input1: {
       placeholder: "Nombre",
       name: "userName",
@@ -60,7 +59,6 @@ export const formPopupData = {
   },
   "add-card": {
     title: "Añadir tarjeta",
-    closeButton: "images/Close Icon.png",
     input1: {
       placeholder: "Título",
       name: "userTitle",

@@ -15,8 +15,6 @@ export const fillPopupFormAttributes = (
   popupFormTemplateContent,
   formPopupData,
 ) => {
-  popupFormTemplateContent.querySelector(".popup__form-close-icon").src =
-    formPopupData[id].closeButton;
   popupFormTemplateContent.querySelector(".popup__form-title").textContent =
     formPopupData[id].title;
   popupFormTemplateContent.querySelector(".popup__form-container").id = id;
