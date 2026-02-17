@@ -1,10 +1,34 @@
+/*
+  ======== POPUP FORM ======
+*/
 .popup {
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
 }
 
-.popup_opened, .popup__container {
+/* ======= GLOBALLY CONTROLS
+VISIBILITY ON ALL POPUPS ========= */
+.popup_opened {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1003;
+  position: fixed;
+}
+
+.popup_form-opened {
+  display: flex;
+  top: 22%;
+  left: calc(50% - 215px);
+  flex-direction: column;
+  margin: auto 0;
+  width: 100%;
+  height: 100%;
+}
+
+.popup__form-container {
   opacity: 1;
   visibility: visible;
   z-index: 1003;
@@ -22,7 +46,7 @@
   border-radius: 10px;
 }
 
-.popup__close-button {
+.popup__form-close-button {
   background-color: transparent;
   z-index: 1004;
   width: auto;
@@ -35,7 +59,7 @@
   right: -50px;
 }
 
-.popup__title {
+.popup__form-title {
   font-weight: 900;
   font-size: 1.5rem;
   color: #000;
@@ -44,7 +68,7 @@
   margin-top: 10px;
 }
 
-.popup__input {
+.popup__form-input {
   border: none;
   outline: none !important;
   border-bottom: 1px solid #c4c4c4;
@@ -52,26 +76,26 @@
   width: 100%;
 }
 
-.popup__set {
+.popup__form-set {
   border: none;
   padding: 0;
   margin: 0;
   height: 0;
 }
 
-.popup__span {
+.popup__form-span {
   width: auto;
   height: auto;
   font-size: 1em;
 }
 
-.popup__span_error-msg {
+.popup__form-span_error-msg {
   color: red;
   padding: 0;
   margin: 0;
 }
 
-.popup__button {
+.popup__form-button {
   width: 100%;
   height: 20%;
   background-color: #000;
@@ -80,57 +104,146 @@
   color: #fff;
 }
 
-.popup__button_disabled {
+.popup__form-button_disabled {
   width: 100%;
   height: 20%;
   color: #000;
-  opacity: 0.20;
+  opacity: 0.2;
   background-color: #fff;
 }
 
-.popup__button_hover:hover {
-    opacity: 0.8;
-    cursor: pointer;
+.popup__form-button_hover:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
-.popup__button_disabled:hover {
+.popup__form-button_disabled:hover {
   cursor: not-allowed;
 }
 
-.popup__close-button:hover {
+.popup__form-close-button:hover {
   cursor: pointer;
   opacity: 0.6;
 }
 
+/*
+  ========= POPUP IMAGE ========
+*/
+
+.popup__visualize-img_opened {
+  width: 101%;
+  height: 101%;
+  display: flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  align-items: center;
+  position: fixed;
+  z-index: 1011;
+  top: 9%;
+}
+
+.popup__visualize-img_opened:hover {
+  cursor: pointer;
+}
+
+.popup__visualize-img-container {
+  width: auto;
+  height: 76vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup__visualize-img-image {
+  width: 101%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+}
+
+.popup__visualize-img-close-button {
+  background-color: transparent;
+  width: auto;
+  height: auto;
+  border: none;
+  color: #fff;
+  position: relative;
+  right: 0;
+  top: -10px;
+  align-self: flex-end;
+}
+
+.popup__visualize-img-close-icon:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.popup__visualize-img-name {
+  width: fit-content;
+  font-size: 12px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: calc(100% - 1px);
+}
+
+.popup__visualize-img-image:hover,
+.popup__visualize-img-name:hover {
+  cursor: default;
+}
+
+/*
+  ========= POPUP FORM MEDIA QUERIES ======
+*/
 @media screen and (min-width: 320px) and (max-width: 430px) {
-  .popup_opened, .popup__container {
+  .popup_opened,
+  .popup__form-container {
     /* 50px of padding */
     width: calc(100% - 50px);
     /* allocate to center of page */
     left: calc(50% - 44%);
   }
 
-  .popup__close-icon {
+  .popup__form-close-icon {
     width: 23px;
     height: 23px;
   }
 
-  .popup__close-button {
+  .popup__form-close-button {
     top: -60px;
     right: 0;
   }
 
-  .popup__input {
+  .popup__form-input {
     width: 100%;
   }
 
-  .popup__button {
+  .popup__form-button {
     width: 100%;
   }
 }
 
 @media screen and (min-width: 431px) and (max-width: 642px) {
-  .popup__close-button {
+  .popup__form-close-button {
+    right: 0;
+  }
+}
+
+/*
+  ======== POPUP IMAGE MEDIA QUERIES =====
+*/
+@media screen and (min-width: 320px) and (max-width: 431px) {
+  .popup__visualize-img-close-button {
+    right: 5%;
+  }
+  .popup__visualize-img-close-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media screen and (min-width: 705px) and (max-width: 715px) {
+  .popup__visualize-img-close-button {
+    top: -10px;
     right: 0;
   }
 }

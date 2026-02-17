@@ -40,7 +40,7 @@ export default class Card {
 
     cardsContainer.addEventListener("click", this._deleteCardHandler);
     cardsContainer.addEventListener("click", this._clickLikeHandler);
-    cardsContainer.addEventListener("click", this._handleCardClick);
+    this._templateContent.querySelector(".card__image").addEventListener("click", this._handleCardClick);
   }
 
   getImageUrl() {

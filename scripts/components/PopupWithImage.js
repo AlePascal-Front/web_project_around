@@ -1,14 +1,20 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithImage extends Popup {
-  constructor(popupTemplateSelector, { imageSrc, imageCaption }) {
-    super(popupTemplateSelector);
+  constructor(popupTemplateId, { imageSrc, imageCaption }) {
+    super(popupTemplateId);
     this._imageSrc = imageSrc;
     this._imageCaption = imageCaption;
   }
 
   open() {
-    this._popupTemplateContent.querySelector(".popup__visualize-img-image").src = this._imageSrc;
+    this._popupTemplateContent.querySelector(
+      ".popup__visualize-img-image",
+    ).src = this._imageSrc;
+    this._popupTemplateContent.querySelector(
+      ".popup__visualize-img-name",
+    ).textContent = this._imageCaption;
+    this._popupTemplateContent.firstElementChildclassList.add("popup__visualize-img_opened");
     super.open();
   }
 
@@ -18,5 +24,9 @@ export default class PopupWithImage extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
+  }
+
+  getPopupTemplateContent() {
+    return super.getPopupTemplateContent();
   }
 }
