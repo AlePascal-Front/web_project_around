@@ -38,11 +38,15 @@ const renderInitialCards = () => {
       items: cards,
       renderer: (item) => {
         const card = new Card(item, () => {
-          const { popupWithImageTemplateId } = TEMPLATE_IDS;
-          new PopupWithImage(popupWithImageTemplateId, {
-            imageSrc: card.getImageUrl(),
-            imageCaption: card.getTitle(),
-          }).open();
+          const popupWithImage = new PopupWithImage(
+            TEMPLATE_IDS.popupWithImageTemplateId,
+            {
+              imageSrc: card.getImageUrl(),
+              imageCaption: card.getTitle(),
+            },
+          );
+          popupWithImage.setEventListeners();
+          popupWithImage.open();
         });
 
         const renderedCard = card.fillAndGetTemplate();
@@ -61,13 +65,11 @@ const renderPopupWithForm = () => {
   without it you'd end up stacking bunch
   of popups when pressing the "enter" key.
   */
-  const { popup } = DOM;
-  if (popup.children.length > 0) {
+  if (DOM.popup.children.length > 0) {
     return;
   }
 
   const { popupId } = state;
-  console.log(popupId)
   const { popupWithFormTemplateId } = TEMPLATE_IDS;
 
   const popupWithForm = new PopupWithForm(popupWithFormTemplateId, (e) => {
@@ -95,22 +97,14 @@ const renderPopupWithForm = () => {
         {
           items: items,
           renderer: (item) => {
-            const card = new Card(item, () => {
-              const { popupWithImageTemplateId } = TEMPLATE_IDS;
-              new PopupWithImage(popupWithImageTemplateId, {
-                imageSrc: card.getImageUrl(),
-                imageCaption: card.getTitle(),
-              }).open();
-            });
-
-            const renderedCard = card.fillAndGetTemplate();
+            const newCard = createCard(item);
 
             // "cards__flex" is a class added when there are no cards
             if (cardsContainer.classList.contains("cards__flex")) {
               removeNoCardsLayout(cardsContainer);
             }
 
-            cardsSection.prependItem(renderedCard);
+            cardsSection.prependItem(newCard);
           },
         },
         cardsContainerSelector,
@@ -136,7 +130,7 @@ renderInitialCards();
 
 const { editBttn, addBttn } = DOM;
 [editBttn, addBttn].forEach((bttn) => {
-  bttn.addEventListener("click", (e) => {
+  bttn.addEventListener("click", () => {
     state.popupId = bttn.closest(`.${bttn.classList[0]}`).id;
     renderPopupWithForm();
   });

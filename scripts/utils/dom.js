@@ -10,7 +10,6 @@ export const DOM = {
 
   popup: document.querySelector(".popup"),
   layout: document.querySelector(".page__opaque-layout"),
-  imageContainer: document.querySelector(".visualize-img"),
 };
 
 export const TEMPLATE_IDS = {
