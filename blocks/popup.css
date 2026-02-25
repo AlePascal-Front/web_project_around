@@ -49,7 +49,8 @@ VISIBILITY ON ALL POPUPS ========= */
   border-radius: 10px;
 }
 
-.popup__form-close-button {
+/* global popup close button rule */
+.popup__close-button {
   background-color: transparent;
   z-index: 1004;
   width: auto;
@@ -124,7 +125,8 @@ VISIBILITY ON ALL POPUPS ========= */
   cursor: not-allowed;
 }
 
-.popup__form-close-button:hover {
+/* global popup close button hover rule */
+.popup__close-button:hover {
   cursor: pointer;
   opacity: 0.6;
 }
@@ -207,12 +209,14 @@ VISIBILITY ON ALL POPUPS ========= */
     left: calc(50% - 44%);
   }
 
-  .popup__form-close-icon {
+  /* global popup close button rule */
+  .popup__close-icon {
     width: 23px;
     height: 23px;
   }
 
-  .popup__form-close-button {
+  /* global popup close button rule */
+  .popup__close-button {
     top: -60px;
     right: 0;
   }
