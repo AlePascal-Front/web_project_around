@@ -203,10 +203,16 @@ VISIBILITY ON ALL POPUPS ========= */
 @media screen and (min-width: 320px) and (max-width: 430px) {
   .popup_opened,
   .popup__form-container {
-    /* 50px of padding */
-    width: calc(100% - 50px);
+    left: 0;
+    /* 15px of padding on both sides*/
+    width: calc(100% - 15px);
     /* allocate to center of page */
-    left: calc(50% - 44%);
+    left: 15px;
+  }
+
+  .popup_opened {
+    height: auto;
+    justify-content: center;
   }
 
   /* global popup close button rule */
@@ -218,7 +224,7 @@ VISIBILITY ON ALL POPUPS ========= */
   /* global popup close button rule */
   .popup__close-button {
     top: -60px;
-    right: 0;
+    right: -10px;
   }
 
   .popup__form-input {
@@ -231,8 +237,17 @@ VISIBILITY ON ALL POPUPS ========= */
 }
 
 @media screen and (min-width: 431px) and (max-width: 642px) {
-  .popup__form-close-button {
-    right: 0;
+  .popup_opened,
+  .popup__form-container {
+    left: 0;
+    /* 15px of padding both sides */
+    width: 80%;
+    /* allocate to center of page */
+    left: 10%;
+  }
+
+  .popup__close-button {
+    right: -50px;
   }
 }
 
@@ -240,16 +255,29 @@ VISIBILITY ON ALL POPUPS ========= */
   ======== POPUP IMAGE MEDIA QUERIES =====
 */
 @media screen and (min-width: 320px) and (max-width: 431px) {
+  .popup__visualize-img-image {
+    height: fit-content;
+  }
+
   .popup__visualize-img-close-button {
     right: 5%;
   }
+
   .popup__visualize-img-close-icon {
     width: 25px;
     height: 25px;
   }
+
+  .popup__visualize-img-name {
+    margin-left: 0;
+  }
 }
 
-@media screen and (min-width: 705px) and (max-width: 715px) {
+@media screen and (min-width: 643px) and (max-width: 1050px) {
+  .popup__visualize-img-container {
+    width: 80%;
+  }
+
   .popup__visualize-img-close-button {
     top: -10px;
     right: 0;
