@@ -112,10 +112,10 @@
           <form action="#" class="popup__form-container" id="popup-form">
             <button
               type="button"
-              class="popup__form-close-button"
+              class="popup__close-button"
               aria-label="Close popup"
             >
-              <img class="popup__form-close-icon" src="images/Close Icon.png" />
+              <img class="popup__close-icon" src="images/Close Icon.png" />
             </button>
             <h2 class="popup__form-title"></h2>
             <input
@@ -148,13 +148,14 @@
         </template>
         <template id="popup-visualize-img-template">
           <div class="popup__visualize-img-container">
+            <!-- give a global class name to both close button and close icon -->
             <button
-              class="popup__visualize-img-close-button"
+              class="popup__close-button"
               aria-label="Close"
             >
               <img
                 src="images/Close Icon.png"
-                class="popup__visualize-img-close-icon"
+                class="popup__close-icon"
               />
             </button>
             <img class="popup__visualize-img-image" />
