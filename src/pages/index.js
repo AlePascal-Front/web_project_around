@@ -1,12 +1,12 @@
-import { formPopupData, cards, validationConfig } from "../../../scripts/utils/data.js";
-import { fillPopupFormAttributes, removeNoCardsLayout } from "../../../scripts/utils/utils.js";
-import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "../../../scripts/utils/dom.js";
-import Card from "../../../scripts/components/Card.js";
-import FormValidator from "../../../scripts/components/FormValidator.js";
-import Section from "../../../scripts/components/Section.js";
-import PopupWithImage from "../../../scripts/components/PopupWithImage.js";
-import PopupWithForm from "../../../scripts/components/PopupWithForm.js";
-import userInfo from "../../../scripts/components/UserInfo.js";
+import { formPopupData, cards, validationConfig } from "../scripts/utils/data.js";
+import { fillPopupFormAttributes, removeNoCardsLayout } from "../scripts/utils/utils.js";
+import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "../scripts/utils/dom.js";
+import Card from "../scripts/components/Card.js";
+import FormValidator from "../scripts/components/FormValidator.js";
+import Section from "../scripts/components/Section.js";
+import PopupWithImage from "../scripts/components/PopupWithImage.js";
+import PopupWithForm from "../scripts/components/PopupWithForm.js";
+import userInfo from "../scripts/components/UserInfo.js";
 
 const state = {
   popupId: null,

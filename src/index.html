@@ -18,7 +18,7 @@
       <header class="header">
         <img
           class="header__logo"
-          src="images/logo.png"
+          src="../images/logo.png"
           alt="Around the world"
         />
       </header>
@@ -26,7 +26,7 @@
         <div class="popup"></div>
         <div class="profile">
           <img
-            src="images/person-photo.jpeg"
+            src="../images/person-photo.jpeg"
             alt="A photo of a person"
             class="profile__photo"
           />
@@ -115,7 +115,7 @@
               class="popup__close-button"
               aria-label="Close popup"
             >
-              <img class="popup__close-icon" src="images/Close Icon.png" />
+              <img class="popup__close-icon" src="../images/Close Icon.png" />
             </button>
             <h2 class="popup__form-title"></h2>
             <input
@@ -149,14 +149,8 @@
         <template id="popup-visualize-img-template">
           <div class="popup__visualize-img-container">
             <!-- give a global class name to both close button and close icon -->
-            <button
-              class="popup__close-button"
-              aria-label="Close"
-            >
-              <img
-                src="images/Close Icon.png"
-                class="popup__close-icon"
-              />
+            <button class="popup__close-button" aria-label="Close">
+              <img src="..images/Close Icon.png" class="popup__close-icon" />
             </button>
             <img class="popup__visualize-img-image" />
             <p class="popup__visualize-img-name"></p>
@@ -186,6 +180,6 @@
         <p class="footer__copyright">&copy; 2024 Around The World</p>
       </footer>
     </div>
-    <script src="scripts/index.js" type="module" defer></script>
+    <script src="pages/index.js" type="module" defer></script>
   </body>
 </html>
