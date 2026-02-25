@@ -14,7 +14,7 @@ export default class PopupWithImage extends Popup {
     this._popupTemplateContent.querySelector(
       ".popup__visualize-img-name",
     ).textContent = this._imageCaption;
-    this._popupTemplateContent.firstElementChildclassList.add("popup__visualize-img_opened");
+    this._popupTemplateContent.firstElementChild.classList.add("popup__visualize-img_opened");
     super.open();
   }
 

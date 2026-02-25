@@ -1,5 +1,5 @@
 import { DOM } from "../utils/dom.js";
-const { layout, popup, imageContainer } = DOM;
+const { layout, popup } = DOM;
 
 export default class Popup {
   constructor(popupTemplateId) {
@@ -29,18 +29,13 @@ export default class Popup {
   _closeLayoutByClick(e) {
     const targetClasses = e.target.classList;
     const hasEitherClass =
-      targetClasses.contains("popup__visualize-img__container") ||
+      targetClasses.contains("popup__visualize-img-container") ||
       targetClasses.contains("page__opaque-layout_active") ||
-      targetClasses.contains("popup__visualize-img_opened");
+      targetClasses.contains("popup__visualize-img_opened") ||
+      targetClasses.contains("popup");
 
-    if (hasEitherClass) {
-      if (popup.children.length > 0) {
-        this.close();
-      } else if (imageContainer.children.length > 0) {
-        layout.classList.remove("page__opaque-layout_active");
-        imageContainer.classList.remove("popup__visualize-img_opened");
-        imageContainer.replaceChildren();
-      }
+    if (hasEitherClass && popup.children.length > 0) {
+      this.close();
     }
   }
 
@@ -50,7 +45,7 @@ export default class Popup {
 
   setEventListeners() {
     this._popupTemplateContent
-      .querySelector(".popup__form-close-icon")
+      .querySelector(".popup__close-icon")
       .addEventListener("click", () => {
         this.close();
       });

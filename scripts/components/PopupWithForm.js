@@ -14,9 +14,6 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    const formIndx = 0;
-    //document.forms[formIndx].reset();
-    console.log(document.forms)
     super.close();
   }
 
@@ -32,33 +29,17 @@ export default class PopupWithForm extends Popup {
     return userInput;
   }
 
-  _closeLayoutByClick(e) {
-    const targetClasses = e.target.classList;
-    const hasEitherClass =
-      targetClasses.contains("popup__visualize-img__container") ||
-      targetClasses.contains("page__opaque-layout_active") ||
-      targetClasses.contains("popup__visualize-img_opened");
-
-    if (hasEitherClass) {
-      if (popup.children.length > 0) {
-      } else if (imageContainer.children.length > 0) {
-        layout.classList.remove("page__opaque-layout_active");
-        imageContainer.classList.remove("visualize-img_opened");
-        imageContainer.replaceChildren();
-      }
-    }
-  }
-
   setEventListeners() {
     const form = this._popupTemplateContent.firstElementChild;
     form.addEventListener("submit", this._submitCallback);
 
-    const submitBttn = this._popupTemplateContent.lastElementChild;
+    const submitBttn = this._popupTemplateContent.firstElementChild.lastElementChild;
     form.addEventListener("keypress", (e) => {
       // prevents the form from submitting when pressing
       // "enter" key
-      if (e.code === "Enter") e.preventDefault();
-
+      if (e.code === "Enter") {
+        e.preventDefault();
+      }
       // allows user to 'submit' using enter key
       if (
         e.target.classList.contains("popup__form-input") &&
@@ -66,7 +47,7 @@ export default class PopupWithForm extends Popup {
         e.code === "Enter" &&
         !submitBttn.disabled
       ) {
-        this._submitCallback;
+        this._submitCallback();
       }
     });
     super.setEventListeners();
