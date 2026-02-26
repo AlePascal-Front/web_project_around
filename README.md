@@ -1,4 +1,4 @@
-# Tripleten web_project_around
+# Tripleten web_project_around_es
 
 Web project from a coding bootcamp with focus on front-end skills build with modern technologies such as HTML, CSS and JavaScript.
 
