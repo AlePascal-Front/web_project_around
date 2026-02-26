@@ -1,8 +1,8 @@
 import { DOM } from "../utils/dom.js";
 const { profile } = DOM;
 
-class UserInfo {
-  constructor({ userName = null, userJob = null }) {
+export default class UserInfo {
+  constructor({ userName, userJob }) {
     this._userName = userName;
     this._userJob = userJob;
   }
@@ -14,21 +14,8 @@ class UserInfo {
     };
   }
 
-  setUserName(userName) {
-    this._userName = userName;
-  }
-
-  setUserJob(userJob) {
-    this._userJob = userJob;
-  }
-
   setUserInfo() {
     profile.querySelector(".profile__name").textContent = this._userName;
     profile.querySelector(".profile__description").textContent = this._userJob;
   }
 }
-
-// singleton pattern in ES modules...
-// no need to create multiple instances of UserInfo
-const userInfo = new UserInfo({ userName: null, userJob: null });
-export default userInfo;

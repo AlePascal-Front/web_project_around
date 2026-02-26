@@ -9,7 +9,7 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForms.js";
-import userInfo from "../components/UserInfo.js";
+import UserInfo from "../components/UserInfo.js";
 
 const state = {
   popupId: null,
@@ -81,8 +81,7 @@ const renderPopupWithForm = () => {
     e?.preventDefault();
     if (popupId === "edit-profile") {
       const [userName, userJob] = popupWithForm._getUserInput();
-      userInfo.setUserName(userName);
-      userInfo.setUserJob(userJob);
+      const userInfo = new UserInfo({ userName: userName, userJob: userJob });
       userInfo.setUserInfo();
       popupWithForm.close();
     } else if (popupId === "add-card") {
