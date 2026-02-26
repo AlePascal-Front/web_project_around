@@ -1,12 +1,15 @@
-import { formPopupData, cards, validationConfig } from "../scripts/utils/data.js";
-import { fillPopupFormAttributes, removeNoCardsLayout } from "../scripts/utils/utils.js";
-import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "../scripts/utils/dom.js";
-import Card from "../scripts/components/Card.js";
-import FormValidator from "../scripts/components/FormValidator.js";
-import Section from "../scripts/components/Section.js";
-import PopupWithImage from "../scripts/components/PopupWithImage.js";
-import PopupWithForm from "../scripts/components/PopupWithForm.js";
-import userInfo from "../scripts/components/UserInfo.js";
+import { formPopupData, cards, validationConfig } from "..//utils/data.js";
+import {
+  fillPopupFormAttributes,
+  removeNoCardsLayout,
+} from "../utils/utils.js";
+import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "../utils/dom.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import userInfo from "../components/UserInfo.js";
 
 const state = {
   popupId: null,
@@ -22,10 +25,12 @@ const createCard = (cardData) => {
   const card = new Card(cardData, (e) => {
     if (e.target.classList.contains("card__image")) {
       const { popupWithImageTemplateId } = TEMPLATE_IDS;
-      new PopupWithImage(popupWithImageTemplateId, {
+      const popupWithImage = new PopupWithImage(popupWithImageTemplateId, {
         imageSrc: card.getImageUrl(),
         imageCaption: card.getTitle(),
-      }).open();
+      });
+      popupWithImage.setEventListeners();
+      popupWithImage.open();
     }
   });
   const filledCard = card.fillAndGetTemplate();

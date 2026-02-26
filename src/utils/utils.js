@@ -1,6 +1,3 @@
-import { DOM } from "./dom.js";
-const { popup, layout, imageContainer } = DOM;
-
 /**
  * Fills the popup attributes with the data
  * obtained from the popup form data object.
