@@ -31,9 +31,12 @@ export default class PopupWithForms extends Popup {
 
   setEventListeners() {
     const form = this._popupTemplateContent.firstElementChild;
-    form.addEventListener("submit", this._submitCallback);
+    form.addEventListener("submit", (e) => {
+      this._submitCallback(e, this._getUserInput());
+    });
 
-    const submitBttn = this._popupTemplateContent.firstElementChild.lastElementChild;
+    const submitBttn =
+      this._popupTemplateContent.firstElementChild.lastElementChild;
     form.addEventListener("keypress", (e) => {
       // prevents the form from submitting when pressing
       // "enter" key
@@ -47,7 +50,7 @@ export default class PopupWithForms extends Popup {
         e.code === "Enter" &&
         !submitBttn.disabled
       ) {
-        this._submitCallback();
+        this._submitCallback(e, this._getUserInput());
       }
     });
     super.setEventListeners();
