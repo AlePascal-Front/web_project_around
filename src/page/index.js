@@ -8,8 +8,8 @@ import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
-import PopupWithForm from "../components/PopupWithForms.js";
 import UserInfo from "../components/UserInfo.js";
+import PopupWithForms from "../components/PopupWithForms.js";
 
 const state = {
   popupId: null,
@@ -77,47 +77,50 @@ const renderPopupWithForm = () => {
   const { popupId } = state;
   const { popupWithFormTemplateId } = TEMPLATE_IDS;
 
-  const popupWithForm = new PopupWithForm(popupWithFormTemplateId, (e) => {
-    e?.preventDefault();
-    if (popupId === "edit-profile") {
-      const [userName, userJob] = popupWithForm._getUserInput();
-      const userInfo = new UserInfo({ userName: userName, userJob: userJob });
-      userInfo.setUserInfo();
-      popupWithForm.close();
-    } else if (popupId === "add-card") {
-      const [title, imageUrl, imageAlt = "user card", origin = "user"] =
-        popupWithForm._getUserInput();
-      const { cardsContainer } = DOM;
+  const popupWithForm = new PopupWithForms(
+    popupWithFormTemplateId,
+    (e, userInput) => {
+      e?.preventDefault();
+      if (popupId === "edit-profile") {
+        const [userName, userJob] = userInput;
+        const userInfo = new UserInfo({ userName: userName, userJob: userJob });
+        userInfo.setUserInfo();
+        popupWithForm.close();
+      } else if (popupId === "add-card") {
+        const [title, imageUrl, imageAlt = "user card", origin = "user"] =
+          userInput;
+        const { cardsContainer } = DOM;
 
-      const items = [
-        {
-          name: title,
-          link: imageUrl,
-          alt: imageAlt,
-          origin: origin,
-        },
-      ];
-      const cardsSection = new Section(
-        {
-          items: items,
-          renderer: (item) => {
-            const newCard = createCard(item);
-
-            // "cards__flex" is a class added when there are no cards
-            if (cardsContainer.classList.contains("cards__flex")) {
-              removeNoCardsLayout(cardsContainer);
-            }
-
-            cardsSection.prependItem(newCard);
+        const items = [
+          {
+            name: title,
+            link: imageUrl,
+            alt: imageAlt,
+            origin: origin,
           },
-        },
-        cardsContainerSelector,
-      );
+        ];
+        const cardsSection = new Section(
+          {
+            items: items,
+            renderer: (item) => {
+              const newCard = createCard(item);
 
-      cardsSection.renderItems();
-      popupWithForm.close();
-    }
-  });
+              // "cards__flex" is a class added when there are no cards
+              if (cardsContainer.classList.contains("cards__flex")) {
+                removeNoCardsLayout(cardsContainer);
+              }
+
+              cardsSection.prependItem(newCard);
+            },
+          },
+          cardsContainerSelector,
+        );
+
+        cardsSection.renderItems();
+        popupWithForm.close();
+      }
+    },
+  );
 
   const popupWithFormTemplateContent = popupWithForm.getPopupTemplateContent();
   fillPopupFormAttributes(popupId, popupWithFormTemplateContent, formPopupData);
