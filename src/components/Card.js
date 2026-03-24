@@ -1,30 +1,16 @@
-import { renderNoCardsLayout } from "../utils/utils.js";
 import { DOM, TEMPLATE_IDS } from "../utils/dom.js";
-const { cardTemplateId } = TEMPLATE_IDS;
 
 export default class Card {
-  constructor({ name, link, alt, origin }, handleCardClick) {
+  constructor({ name, link, alt, origin }, handleCardClick, handleDeleteClick) {
     this._title = name;
     this._imageUrl = link;
     this._imageAlt = alt;
     this._origin = origin;
     this._templateContent = document
-      .getElementById(cardTemplateId)
+      .getElementById(TEMPLATE_IDS.cardTemplateId)
       .content.cloneNode(true);
     this._handleCardClick = handleCardClick;
-  }
-
-  _deleteCardHandler(e) {
-    const deleteButton = e.target.closest(".card__delete-button-svg");
-    if (!deleteButton) return;
-
-    e.target.closest(".card").remove();
-
-    const cardsContainer = DOM.cardsContainer;
-    if (cardsContainer.children.length === 0) {
-      const noCardsContent = TEMPLATES.noCards.content.cloneNode(true);
-      renderNoCardsLayout(cardsContainer, noCardsContent);
-    }
+    this._handleDeleteClick = handleDeleteClick;
   }
 
   _clickLikeHandler(e) {
@@ -37,10 +23,11 @@ export default class Card {
   _attachEventListeners() {
     // event delegation
     const cardsContainer = DOM.cardsContainer;
-
-    cardsContainer.addEventListener("click", this._deleteCardHandler);
+    cardsContainer.addEventListener("click", this._handleDeleteClick);
     cardsContainer.addEventListener("click", this._clickLikeHandler);
-    this._templateContent.querySelector(".card__image").addEventListener("click", this._handleCardClick);
+    this._templateContent
+      .querySelector(".card__image")
+      .addEventListener("click", this._handleCardClick);
   }
 
   getImageUrl() {
