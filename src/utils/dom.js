@@ -16,6 +16,5 @@ export const TEMPLATE_IDS = {
   popupWithFormTemplateId: "popup-form-template",
   popupWithImageTemplateId: "popup-visualize-img-template",
   cardTemplateId: "card-template",
+  confirmDeleteTemplateId: "popup-confirm-delete-template",
 };
-
-export const cardsContainerSelector = ".cards__grid";
