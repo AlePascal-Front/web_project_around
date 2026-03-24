@@ -3,17 +3,32 @@ import {
   fillPopupFormAttributes,
   removeNoCardsLayout,
 } from "../utils/utils.js";
-import { DOM, TEMPLATE_IDS, cardsContainerSelector } from "../utils/dom.js";
+import { DOM, TEMPLATE_IDS } from "../utils/dom.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForms from "../components/PopupWithForms.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 const state = {
   popupId: null,
   areInitialCardsRendered: false,
+};
+
+const handleDeleteClick = (e) => {
+  // consider that the event is attached to the cards' container
+  // to lower memory usage throughout the application instead of attaching
+  // 1 event to n buttons
+  const deleteButton = e.target.closest(".card__delete-button-svg");
+  if (!deleteButton) return;
+
+  const popupWithConfirmation = new PopupWithConfirmation(
+    TEMPLATE_IDS.confirmDeleteTemplateId,
+  );
+  popupWithConfirmation.setEventListeners();
+  popupWithConfirmation.open();
 };
 
 const createCard = (cardData) => {
@@ -22,17 +37,23 @@ const createCard = (cardData) => {
     cards.push(cardData);
   }
 
-  const card = new Card(cardData, (e) => {
-    if (e.target.classList.contains("card__image")) {
-      const { popupWithImageTemplateId } = TEMPLATE_IDS;
-      const popupWithImage = new PopupWithImage(popupWithImageTemplateId, {
-        imageSrc: card.getImageUrl(),
-        imageCaption: card.getTitle(),
-      });
-      popupWithImage.setEventListeners();
-      popupWithImage.open();
-    }
-  });
+  const card = new Card(
+    cardData,
+    (e) => {
+      if (e.target.classList.contains("card__image")) {
+        const popupWithImage = new PopupWithImage(
+          TEMPLATE_IDS.popupWithImageTemplateId,
+          {
+            imageSrc: card.getImageUrl(),
+            imageCaption: card.getTitle(),
+          },
+        );
+        popupWithImage.setEventListeners();
+        popupWithImage.open();
+      }
+    },
+    handleDeleteClick,
+  );
   const filledCard = card.fillAndGetTemplate();
   return filledCard;
 };
@@ -42,23 +63,26 @@ const renderInitialCards = () => {
     {
       items: cards,
       renderer: (item) => {
-        const card = new Card(item, () => {
-          const popupWithImage = new PopupWithImage(
-            TEMPLATE_IDS.popupWithImageTemplateId,
-            {
-              imageSrc: card.getImageUrl(),
-              imageCaption: card.getTitle(),
-            },
-          );
-          popupWithImage.setEventListeners();
-          popupWithImage.open();
-        });
-
+        const card = new Card(
+          item,
+          () => {
+            const popupWithImage = new PopupWithImage(
+              TEMPLATE_IDS.popupWithImageTemplateId,
+              {
+                imageSrc: card.getImageUrl(),
+                imageCaption: card.getTitle(),
+              },
+            );
+            popupWithImage.setEventListeners();
+            popupWithImage.open();
+          },
+          handleDeleteClick,
+        );
         const renderedCard = card.fillAndGetTemplate();
         cardsSection.addItem(renderedCard);
       },
     },
-    cardsContainerSelector,
+    DOM.cardsContainer,
   );
   cardsSection.renderItems();
   state.areInitialCardsRendered = true;
@@ -113,7 +137,7 @@ const renderPopupWithForm = () => {
               cardsSection.prependItem(newCard);
             },
           },
-          cardsContainerSelector,
+          cardsContainer,
         );
 
         cardsSection.renderItems();
