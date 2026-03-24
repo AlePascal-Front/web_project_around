@@ -9,7 +9,7 @@
     visibility 0.5s ease-in-out;
 }
 
-/* ======= GLOBALLY CONTROLS
+/* ======= GLOBALLY CONTROLSpopup__confirm-delete-bttn-container
 VISIBILITY ON ALL POPUPS ========= */
 .popup_opened {
   width: 100%;
@@ -49,7 +49,8 @@ VISIBILITY ON ALL POPUPS ========= */
   border-radius: 10px;
 }
 
-/* global popup close button rule */
+/* global popup close button rule for
+popup form and popup visualize image */
 .popup__close-button {
   background-color: transparent;
   z-index: 1004;
@@ -196,6 +197,43 @@ VISIBILITY ON ALL POPUPS ========= */
 .popup__visualize-img-name:hover {
   cursor: default;
 }
+
+/*
+  ========= POPUP CONFIRM DELETE ======
+*/
+
+.popup__confirm-delete-container {
+  width: 430px;
+  height: 181px;
+  background-color: #fff;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  border-radius: 10px;
+  padding: 15px;
+  position: relative;
+}
+
+.popup__confirm-delete-text {
+  color: #000;
+  font-weight: 900;
+  font-size: 24px;
+}
+
+.popup__confirm-delete-bttn {
+  width: 100%;
+  height: 50px;
+  padding: 5px;
+  color: #fff;
+  background-color: #000;
+  border-radius: 2px;
+}
+
+.popup__confirm-delete-bttn:hover {
+  cursor: pointer;
+}
+
 
 /*
   ========= POPUP FORM MEDIA QUERIES ======
