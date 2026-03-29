@@ -13,7 +13,8 @@ export const DOM = {
 };
 
 export const TEMPLATE_IDS = {
-  popupWithFormTemplateId: "popup-form-template",
+  popupWithFormTemplateIdOneInput: "popup-form-template-one-input",
+  popupWithFormTemplateIdTwoInputs: "popup-form-template-two-inputs",
   popupWithImageTemplateId: "popup-visualize-img-template",
   cardTemplateId: "card-template",
   confirmDeleteTemplateId: "popup-confirm-delete-template",

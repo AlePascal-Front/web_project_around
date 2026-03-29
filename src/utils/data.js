@@ -76,7 +76,7 @@ export const formPopupData = {
       isRequired: true,
     },
   },
-  "change-profile-picture": {
+  "edit-photo": {
     title: "Cambiar foto de perfil",
     input1: {
       placeholder: "Enlace",
