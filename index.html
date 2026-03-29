@@ -108,8 +108,12 @@
             </div>
           </div>
         </template>
-        <template id="popup-form-template">
-          <form action="#" class="popup__form-container" id="popup-form">
+        <template id="popup-form-template-two-inputs">
+          <form
+            action="#"
+            class="popup__form-container"
+            id="popup-form-two-inputs"
+          >
             <button
               type="button"
               class="popup__close-button"
@@ -129,6 +133,39 @@
             <span class="popup__form-span"></span>
             <input
               type="text"
+              name=""
+              id=""
+              placeholder=""
+              class="popup__form-input"
+              autocomplete="on"
+            />
+            <span class="popup__form-span"></span>
+            <input
+              type="submit"
+              name="submit"
+              id="submit-button"
+              class="popup__form-button_disabled"
+              value="Guardar"
+              disabled
+            />
+          </form>
+        </template>
+        <template id="popup-form-template-one-input">
+          <form
+            action="#"
+            class="popup__form-container"
+            id="popup-form-one-input"
+          >
+            <button
+              type="button"
+              class="popup__close-button"
+              aria-label="Close popup"
+            >
+              <img class="popup__close-icon" src="/images/Close Icon.png" />
+            </button>
+            <h2 class="popup__form-title"></h2>
+            <input
+              type=""
               name=""
               id=""
               placeholder=""
