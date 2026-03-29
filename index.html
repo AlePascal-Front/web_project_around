@@ -25,11 +25,29 @@
       <main class="content">
         <div class="popup"></div>
         <div class="profile">
-          <img
-            src="images/person-photo.jpeg"
-            alt="A photo of a person"
-            class="profile__photo"
-          />
+          <div class="profile__photo-container">
+            <button class="profile__edit-profile-photo_hidden">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 26 26"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="profile__edit-profile-photo-svg_hidden"
+              >
+                <path
+                  d="M26 3.45351L6.76981 22.7932L3.33585 19.2903L22.517 0L26 3.45351ZM0 26L5.10189 24.4706L1.52075 21.0171L0 26Z"
+                  fill="white"
+                />
+              </svg>
+            </button>
+            <img
+              src="images/person-photo.jpeg"
+              alt="Profile picture"
+              class="profile__photo"
+              id="edit-photo"
+            />
+          </div>
           <div class="profile__content">
             <h1 class="profile__name">Jacques Cousteau</h1>
             <p class="profile__description">Explorateur</p>

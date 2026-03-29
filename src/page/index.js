@@ -88,7 +88,7 @@ const renderInitialCards = () => {
   state.areInitialCardsRendered = true;
 };
 
-const renderPopupWithForm = () => {
+const renderPopupWithForm = (numOfFields) => {
   /*
   this conditional is here because
   without it you'd end up stacking bunch
@@ -98,53 +98,55 @@ const renderPopupWithForm = () => {
     return;
   }
 
+  let formTemplateId;
+  if (numOfFields === 2) {
+    formTemplateId = TEMPLATE_IDS.popupWithFormTemplateIdTwoInputs;
+  } else if (numOfFields === 1) {
+    formTemplateId = TEMPLATE_IDS.popupWithFormTemplateIdOneInput;
+  }
+
   const { popupId } = state;
-  const { popupWithFormTemplateId } = TEMPLATE_IDS;
+  const popupWithForm = new PopupWithForms(formTemplateId, (e, userInput) => {
+    e?.preventDefault();
+    if (popupId === "edit-profile") {
+      const [userName, userJob] = userInput;
+      const userInfo = new UserInfo({ userName: userName, userJob: userJob });
+      userInfo.setUserInfo();
+      popupWithForm.close();
+    } else if (popupId === "add-card") {
+      const [title, imageUrl, imageAlt = "user card", origin = "user"] =
+        userInput;
+      const { cardsContainer } = DOM;
 
-  const popupWithForm = new PopupWithForms(
-    popupWithFormTemplateId,
-    (e, userInput) => {
-      e?.preventDefault();
-      if (popupId === "edit-profile") {
-        const [userName, userJob] = userInput;
-        const userInfo = new UserInfo({ userName: userName, userJob: userJob });
-        userInfo.setUserInfo();
-        popupWithForm.close();
-      } else if (popupId === "add-card") {
-        const [title, imageUrl, imageAlt = "user card", origin = "user"] =
-          userInput;
-        const { cardsContainer } = DOM;
+      const items = [
+        {
+          name: title,
+          link: imageUrl,
+          alt: imageAlt,
+          origin: origin,
+        },
+      ];
+      const cardsSection = new Section(
+        {
+          items: items,
+          renderer: (item) => {
+            const newCard = createCard(item);
 
-        const items = [
-          {
-            name: title,
-            link: imageUrl,
-            alt: imageAlt,
-            origin: origin,
+            // "cards__flex" is a class added when there are no cards
+            if (cardsContainer.classList.contains("cards__flex")) {
+              removeNoCardsLayout(cardsContainer);
+            }
+
+            cardsSection.prependItem(newCard);
           },
-        ];
-        const cardsSection = new Section(
-          {
-            items: items,
-            renderer: (item) => {
-              const newCard = createCard(item);
+        },
+        cardsContainer,
+      );
 
-              // "cards__flex" is a class added when there are no cards
-              if (cardsContainer.classList.contains("cards__flex")) {
-                removeNoCardsLayout(cardsContainer);
-              }
-
-              cardsSection.prependItem(newCard);
-            },
-          },
-          cardsContainer,
-        );
-
-        cardsSection.renderItems();
-        popupWithForm.close();
-      }
-    },
-  );
+      cardsSection.renderItems();
+      popupWithForm.close();
+    }
+  });
 
   const popupWithFormTemplateContent = popupWithForm.getPopupTemplateContent();
   fillPopupFormAttributes(popupId, popupWithFormTemplateContent, formPopupData);
@@ -159,10 +161,26 @@ const renderPopupWithForm = () => {
 
 renderInitialCards();
 
+const photoContainer = DOM.profile.firstElementChild;
+const editPhotoBttn = photoContainer.firstElementChild;
+const profilePhoto = editPhotoBttn.nextElementSibling;
+profilePhoto.addEventListener("mouseenter", () => {
+  if (!editPhotoBttn.classList.contains("profile__edit-profile-photo_show")) {
+    editPhotoBttn.classList.add("profile__edit-profile-photo_show");
+  }
+});
+
+profilePhoto.addEventListener("mouseout", () => {
+  if (editPhotoBttn.classList.contains("profile__edit-profile-photo_show")) {
+    editPhotoBttn.classList.remove("profile__edit-profile-photo_show");
+  }
+});
+
 const { editBttn, addBttn } = DOM;
-[editBttn, addBttn].forEach((bttn) => {
-  bttn.addEventListener("click", () => {
-    state.popupId = bttn.closest(`.${bttn.classList[0]}`).id;
-    renderPopupWithForm();
+[editBttn, addBttn, profilePhoto].forEach((bttn, indx) => {
+  bttn.addEventListener("click", (e) => {
+    state.popupId = e.target.closest(`.${bttn.classList[0]}`).id;
+    let numOfFields = indx < 2 ? 2 : 1;
+    renderPopupWithForm(numOfFields);
   });
 });
