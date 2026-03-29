@@ -76,6 +76,17 @@ export const formPopupData = {
       isRequired: true,
     },
   },
+  "change-profile-picture": {
+    title: "Cambiar foto de perfil",
+    input1: {
+      placeholder: "Enlace",
+      name: "userPicture",
+      id: "userPicture",
+      inputType: "url",
+      lengthRange: null,
+      isRequired: true,
+    },
+  },
 };
 
 export const validationConfig = {
