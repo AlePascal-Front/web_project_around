@@ -13,6 +13,29 @@
   height: 120px;
   border-radius: 50%;
   aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+.profile__photo-container {
+  position: relative;
+}
+
+.profile__edit-profile-photo_hidden {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - (30% / 2));
+  left: calc(50% - (30% / 2));
+  width: 30%;
+  height: 30%;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  pointer-events: none;
+}
+
+.profile__edit-profile-photo_show {
+  display: block;
 }
 
 .profile__content {
@@ -74,6 +97,11 @@
 .profile__add-button:hover,
 .profile__edit-button:hover {
   opacity: 0.6;
+  cursor: pointer;
+}
+
+.profile__photo:hover {
+  opacity: 0.2;
   cursor: pointer;
 }
 
