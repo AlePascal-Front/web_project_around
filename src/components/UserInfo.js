@@ -2,20 +2,20 @@ import { DOM } from "../utils/dom.js";
 const { profile } = DOM;
 
 export default class UserInfo {
-  constructor({ userName, userJob }) {
-    this._userName = userName;
-    this._userJob = userJob;
+  constructor({ name, about }) {
+    this._name = name;
+    this._about = about;
   }
 
   getUserInfo() {
     return {
-      userName: this._userName,
-      userJob: this._userJob,
+      name: this._name,
+      about: this._about,
     };
   }
 
   setUserInfo() {
-    profile.querySelector(".profile__name").textContent = this._userName;
-    profile.querySelector(".profile__description").textContent = this._userJob;
+    profile.querySelector(".profile__name").textContent = this._name;
+    profile.querySelector(".profile__description").textContent = this._about;
   }
 }

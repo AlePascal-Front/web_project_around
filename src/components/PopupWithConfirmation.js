@@ -1,9 +1,9 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithConfirmation extends Popup {
-  constructor(popupTemplateId) {
+  constructor(popupTemplateId, deleteConfirmationCallback) {
     super(popupTemplateId);
-    //this._deleteConfirmationCallback = deleteConfirmationCallback.bind(this);
+    this._deleteConfirmationCallback = deleteConfirmationCallback.bind(this);
   }
 
   setEventListeners() {
