@@ -1,7 +1,8 @@
-import { formPopupData, cards, validationConfig } from "..//utils/data.js";
+import { formPopupData, validationConfig } from "../utils/data.js";
 import {
   fillPopupFormAttributes,
   removeNoCardsLayout,
+  changeTextOf,
 } from "../utils/utils.js";
 import { DOM, TEMPLATE_IDS } from "../utils/dom.js";
 import Card from "../components/Card.js";
@@ -11,10 +12,12 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForms from "../components/PopupWithForms.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
+import api from "../components/Api.js";
 
 const state = {
   popupId: null,
   areInitialCardsRendered: false,
+  lastClickedCardId: null,
 };
 
 const handleDeleteClick = (e) => {
@@ -23,45 +26,36 @@ const handleDeleteClick = (e) => {
   // 1 event to n buttons
   const deleteButton = e.target.closest(".card__delete-button-svg");
   if (!deleteButton) return;
+  const card = e.target.closest(".card");
+  const cardId = card.getAttribute("data-id");
 
   const popupWithConfirmation = new PopupWithConfirmation(
     TEMPLATE_IDS.confirmDeleteTemplateId,
+    () => {
+      changeTextOf(
+        document.querySelector(".popup__confirm-delete-bttn"),
+        "Cargando...",
+      );
+      api.deleteCard(cardId).then(() => card.remove());
+    },
   );
   popupWithConfirmation.setEventListeners();
   popupWithConfirmation.open();
 };
 
-const createCard = (cardData) => {
-  // push user data to keep congruential states
-  if (state.areInitialCardsRendered) {
-    cards.push(cardData);
+const renderCards = (
+  cardData,
+  permissionToCloseForm = null,
+  formObj = null,
+) => {
+  if (!Array.isArray(cardData) && typeof cardData === "object") {
+    const { name, link, isLiked, _id } = cardData;
+    cardData = [{ name: name, link: link, isLiked: isLiked, _id: _id }];
   }
 
-  const card = new Card(
-    cardData,
-    (e) => {
-      if (e.target.classList.contains("card__image")) {
-        const popupWithImage = new PopupWithImage(
-          TEMPLATE_IDS.popupWithImageTemplateId,
-          {
-            imageSrc: card.getImageUrl(),
-            imageCaption: card.getTitle(),
-          },
-        );
-        popupWithImage.setEventListeners();
-        popupWithImage.open();
-      }
-    },
-    handleDeleteClick,
-  );
-  const filledCard = card.fillAndGetTemplate();
-  return filledCard;
-};
-
-const renderInitialCards = () => {
   const cardsSection = new Section(
     {
-      items: cards,
+      items: cardData,
       renderer: (item) => {
         const card = new Card(
           item,
@@ -86,6 +80,23 @@ const renderInitialCards = () => {
   );
   cardsSection.renderItems();
   state.areInitialCardsRendered = true;
+
+  if (
+    permissionToCloseForm !== null &&
+    formObj !== null &&
+    permissionToCloseForm
+  ) {
+    formObj.close();
+  }
+};
+
+const renderInitialCards = () => {
+  api
+    .getInitialCards()
+    .then((data) => {
+      renderCards(data);
+    })
+    .catch((err) => console.error(err));
 };
 
 const renderPopupWithForm = (numOfFields) => {
@@ -108,43 +119,33 @@ const renderPopupWithForm = (numOfFields) => {
   const { popupId } = state;
   const popupWithForm = new PopupWithForms(formTemplateId, (e, userInput) => {
     e?.preventDefault();
+    changeTextOf(document.getElementById("submit-button"), "Cargando...");
+
     if (popupId === "edit-profile") {
-      const [userName, userJob] = userInput;
-      const userInfo = new UserInfo({ userName: userName, userJob: userJob });
-      userInfo.setUserInfo();
-      popupWithForm.close();
+      const [name, about] = userInput;
+      const userInfo = new UserInfo({ name: name, about: about });
+
+      api
+        .updateUserInfo(userInfo.getUserInfo())
+        .then(() => {
+          userInfo.setUserInfo();
+          popupWithForm.close();
+        })
+        .catch((err) => console.error(err));
     } else if (popupId === "add-card") {
-      const [title, imageUrl, imageAlt = "user card", origin = "user"] =
-        userInput;
-      const { cardsContainer } = DOM;
+      const [title, imageUrl] = userInput;
 
-      const items = [
-        {
-          name: title,
-          link: imageUrl,
-          alt: imageAlt,
-          origin: origin,
-        },
-      ];
-      const cardsSection = new Section(
-        {
-          items: items,
-          renderer: (item) => {
-            const newCard = createCard(item);
+      const items = {
+        name: title,
+        link: imageUrl,
+      };
 
-            // "cards__flex" is a class added when there are no cards
-            if (cardsContainer.classList.contains("cards__flex")) {
-              removeNoCardsLayout(cardsContainer);
-            }
-
-            cardsSection.prependItem(newCard);
-          },
-        },
-        cardsContainer,
-      );
-
-      cardsSection.renderItems();
-      popupWithForm.close();
+      api
+        .postCardData(items)
+        .then((data) => {
+          renderCards(data, true, popupWithForm);
+        })
+        .catch((err) => console.error(err));
     }
   });
 
