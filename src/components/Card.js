@@ -1,11 +1,17 @@
 import { DOM, TEMPLATE_IDS } from "../utils/dom.js";
 
 export default class Card {
-  constructor({ name, link, alt, origin }, handleCardClick, handleDeleteClick) {
+  constructor(
+    { name, link, alt = "user card", origin = "user card", _id, isLiked },
+    handleCardClick,
+    handleDeleteClick,
+  ) {
     this._title = name;
     this._imageUrl = link;
     this._imageAlt = alt;
     this._origin = origin;
+    this._id = _id;
+    this._isLiked = isLiked;
     this._templateContent = document
       .getElementById(TEMPLATE_IDS.cardTemplateId)
       .content.cloneNode(true);
@@ -18,6 +24,7 @@ export default class Card {
     if (!likeButton) return;
 
     likeButton.classList.toggle("card__like-button-svg_active");
+    this._isLiked = !this._isLiked;
   }
 
   _attachEventListeners() {
@@ -45,7 +52,9 @@ export default class Card {
     const imageElem = this._templateContent.querySelector(".card__image");
     imageElem.src = this._imageUrl;
     imageElem.alt = this._imageAlt;
-
+    this._templateContent
+      .querySelector(".card")
+      .setAttribute("data-id", this._id);
     return this._templateContent;
   }
 }
