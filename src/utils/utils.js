@@ -74,3 +74,12 @@ export const removeNoCardsLayout = (cardsContainer) => {
     cardsContainer.replaceChildren();
   }
 };
+
+export const changeTextOf = (elem, newTxt) => {
+  if (elem instanceof HTMLInputElement) {
+    elem.value = newTxt;
+  }
+  else {
+    elem.textContent = newTxt;
+  }
+};
