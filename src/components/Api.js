@@ -18,7 +18,7 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      return new Promise.reject(
+      return Promise.reject(
         `ERROR ${res.status} while fetching cards: ${res.statusText}`,
       );
     });
@@ -33,33 +33,60 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      return new Promise.reject(
+      return Promise.reject(
         `ERROR ${res.status} while creating new resource: ${res.statusText}`,
       );
     });
   }
 
-  async deleteCard(id) {
-    await fetch(`${this._baseUrl}/cards/${id}`, {
+  deleteCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._header,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.status;
-        } else {
-          new Promise.reject(
-            `ERROR ${res.status} while deleting resource: ${res.statusText}`,
-          );
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        return Promise.reject(
+          `ERROR ${res.status} while deleting resource: ${res.statusText}`,
+        );
+      }
+    });
+  }
+
+  toggleLikeOnCard(likeState, id) {
+    const method = likeState ? "PUT" : "DELETE";
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: method,
+      headers: this._header,
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        return Promise.reject(
+          `ERROR ${res.status} while putting/deleting resource: ${res.statusText}`,
+        );
+      }
+    });
+  }
+
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "GET",
+      headers: this._header,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(
+          `ERROR ${res.status} while accesing user info: ${res.statusText}`,
+        );
+      }
+    });
   }
 
   updateUserInfo(newInfo) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._header,
       body: JSON.stringify(newInfo),
@@ -67,7 +94,7 @@ class Api {
       if (res.ok) {
         return res.json();
       } else {
-        new Promise.reject(
+        return Promise.reject(
           `ERROR ${res.statusText} while patching resource: ${res.statusText}`,
         );
       }

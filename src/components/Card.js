@@ -5,6 +5,7 @@ export default class Card {
     { name, link, alt = "user card", origin = "user card", _id, isLiked },
     handleCardClick,
     handleDeleteClick,
+    clickLikeHandler,
   ) {
     this._title = name;
     this._imageUrl = link;
@@ -17,6 +18,7 @@ export default class Card {
       .content.cloneNode(true);
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._clickLikeHandler = clickLikeHandler;
   }
 
   _clickLikeHandler(e) {
@@ -43,6 +45,14 @@ export default class Card {
 
   getTitle() {
     return this._title;
+  }
+
+  getIsLiked() {
+    return this._isLiked;
+  }
+
+  setIsLiked(isLiked) {
+    this._isLiked = !isLiked;
   }
 
   fillAndGetTemplate() {
